@@ -1,11 +1,13 @@
 {
-  "name": "website-using-express",
-  "version": "0.0.1",
+  "name": "DSBook",
+  "version": "0.0.2",
   "scripts": {
     "start": "node Server.js"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "latest",
-    "mongodb": "^2.2.10"
+    "mongodb": "^2.2.10",
+    "mongoose": "^4.6.3"
   }
 }
