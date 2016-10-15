@@ -1,12 +1,7 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema,
-	ObjectId = Schema.ObjectId;
+var Schema = mongoose.Schema
 
 var User = new Schema({
-	user: {
-		type: ObjectId,
-		require: true
-	},
 	name: {
 		type: String,
 		require: false
@@ -19,11 +14,14 @@ var User = new Schema({
 		type: String,
 		require: true
 	},
-	phone: {
+	email: {
+		type: String,
+		require: false
+	},
+	notyfications: {
 		type: String,
 		require: false
 	}
 })
-
 
 module.export = User

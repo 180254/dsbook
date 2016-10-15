@@ -1,29 +1,25 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema,
-	ObjectId = Schema.ObjectId;
+var mongoose = require('mongoose')
+var Schema = mongoose.Schema
 
-var Notyfication = new Schema({
-	notyfication: {
-		type: ObjectId,
-		require: true
-	},
+var NotyficationSchema = new Schema({
 	username: {
 		type: String,
 		require: true
 	},
-	date: {
+	body: {
 		type: String,
 		require: true
 	},
 	status: {
 		type: String,
-		require: true
+		require: true,
+		default: "active"
 	},
-	body: {
+	date: {
 		type: Date,
 		require: true,
 		default: Date.now
 	}
 })
 
-module.export = Notyfication
+module.export = NotyficationSchema

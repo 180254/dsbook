@@ -1,7 +1,8 @@
-# instalation
+# Instalation
+Install: nodejs, npm, mongodb
+> npm install
 
-install: nodejs, npm, mongodb
+> node server.js
 
-npm install
-
-node server.js
+run dev:
+> nodemon server.js

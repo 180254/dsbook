@@ -2,12 +2,19 @@
   "name": "DSBook",
   "version": "0.0.2",
   "scripts": {
-    "start": "node Server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "latest",
     "mongodb": "^2.2.10",
-    "mongoose": "^4.6.3"
+    "mongoose": "^4.6.3",
+    "mpromise": "^0.5.5"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.1.2",
+    "nodemon": "^1.11.0"
   }
 }
