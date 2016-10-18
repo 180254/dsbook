@@ -2,7 +2,7 @@
 process.env.NODE_ENV = 'test';
 
 let mongoose = require("mongoose");
-let Notification = require('../models/notification.js');
+let Notification = require('../model/notification.js');
 let routes = require('../routes.js');
 
 //Require the dev-dependencies

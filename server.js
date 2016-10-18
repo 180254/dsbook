@@ -7,13 +7,13 @@ const routes = require("./routes.js");
 
 const dbUri = "mongodb://localhost/dsbook";
 mongoose.connect(dbUri, (err) => {
-    if (err) {
-        console.log("mongoose.connect: FAIL (!)");
-        console.log("stopping server ...");
-        process.exit(0);
-    } else {
-        console.log("mongoose.connect: OK")
-    }
+	if (err) {
+		console.log("mongoose.connect: FAIL (!)");
+		console.log("stopping server ...");
+		process.exit(0);
+	} else {
+		console.log("mongoose.connect: OK")
+	}
 });
 
 const app = express();
@@ -31,7 +31,7 @@ const port = process.argv[2] || 3000;
 
 app.use("/", router);
 app.listen(port, function () {
-    console.log("Live at Port " + port);
+	console.log("Live at Port " + port);
 });
 
 module.exports = app;

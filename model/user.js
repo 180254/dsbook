@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var User = new Schema({
+const User = new Schema({
 	name: {
 		type: String,
 		require: false
@@ -22,6 +22,6 @@ var User = new Schema({
 		type: String,
 		require: false
 	}
-})
+});
 
-module.export = User
+module.export = User;

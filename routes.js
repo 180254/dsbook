@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
-var User = mongoose.model('User', require('./models/user.js'));
-var Notification = mongoose.model('Notification', require('./models/notification.js'));
+var User = mongoose.model('User', require('./model/user.js'));
+var Notification = mongoose.model('Notification', require('./model/notification.js'));
 
 // post new notification
 // parameters: req.body.username, req.body.body
@@ -12,7 +12,7 @@ exports.postNotification = function (req, res, next) {
 		body: req.body.body
 	}, function (error, doc) {
 		if (error) {
-			console.log(error)
+			console.log(error);
 			res.sendStatus(404);
 		} else {
 			res.sendStatus(201);
@@ -34,18 +34,18 @@ exports.getNotifications = function (req, res, next) {
 				status: "active"
 			}, function (err, docs) {
 				if (err) {
-					console.log(err)
+					console.log(err);
 					res.sendStatus(404)
 				}
 				res.send(docs);
-				
+
 			});
 	} else {
 		Notification
 			.find({}, function (err, docs) {
 				if (err) {
-					console.log(err)
-					res.sendStatus(404)
+					console.log(err);
+					res.sendStatus(404);
 				}
 				res.send(docs);
 
@@ -68,7 +68,7 @@ exports.gettNotification = function (req, res, next) {
 				status: "active"
 			}, function (err, docs) {
 				if (err) {
-					console.log(err)
+					console.log(err);
 					res.sendStatus(404)
 				}
 				res.send(docs);
@@ -79,7 +79,7 @@ exports.gettNotification = function (req, res, next) {
 				username: req.query.username
 			}, function (err, docs) {
 				if (err) {
-					console.log(err)
+					console.log(err);
 					res.sendStatus(404)
 				}
 				res.send(docs);
