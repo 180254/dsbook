@@ -1,49 +1,37 @@
-var express = require("express");
-var bodyParser = require('body-parser');
-var app = express();
-var router = express.Router();
-var path = __dirname + '/views/'
-var mongoose = require('mongoose');
-var routes = require('./routes.js');
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const serveStatic = require("serve-static");
+const cookieParser = require("cookie-parser");
+const routes = require("./routes.js");
 
-app.use(bodyParser.json())
-
-var dbUri = 'mongodb://localhost/dsbook';
-mongoose.connect(dbUri, () => console.log('Connected to mongodb'));
-router.post('/notification', routes.postNotification);
-router.get('/notifications', routes.getNotifications);
-router.get('/notification', routes.gettNotification);
-
-router.use(function (req, res, next) {
-	console.log("I got method " +
-		"/" + req.method);
-	next();
+const dbUri = "mongodb://localhost/dsbook";
+mongoose.connect(dbUri, (err) => {
+    if (err) {
+        console.log("mongoose.connect: FAIL (!)");
+        console.log("stopping server ...");
+        process.exit(0);
+    } else {
+        console.log("mongoose.connect: OK")
+    }
 });
 
-router.get("/", function (req, res) {
-	res.sendFile(path + "index.html");
-	var id = req.param('id');
-	if (id != undefined) {
-		console.log("I got id " + id);
-	}
-});
+const app = express();
+const router = express.Router();
 
-router.get("/about", function (req, res) {
-	res.sendFile(path + "about.html");
-});
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(serveStatic("views", {"index": ["index.html"],}));
 
-router.get("/contact", function (req, res) {
-	res.sendFile(path + "contact.html");
-});
+router.post("/notification", routes.postNotification);
+router.get("/notifications", routes.getNotifications);
+router.get("/notification", routes.gettNotification);
+
+const port = process.argv[2] || 3000;
 
 app.use("/", router);
-
-app.use("*", function (req, res) {
-	res.sendFile(path + "404.html");
-});
-
-app.listen(3000, function () {
-	console.log("Live at Port 3000");
+app.listen(port, function () {
+    console.log("Live at Port " + port);
 });
 
 module.exports = app;
