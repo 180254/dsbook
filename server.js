@@ -10,9 +10,9 @@ app.use(bodyParser.json())
 
 var dbUri = 'mongodb://localhost/dsbook';
 mongoose.connect(dbUri, () => console.log('Connected to mongodb'));
-router.post('/notyfication', routes.postNotyfication);
-router.get('/notyfications', routes.getNotyfications);
-router.get('/notyfication', routes.gettNotyfication);
+router.post('/notification', routes.postNotification);
+router.get('/notifications', routes.getNotifications);
+router.get('/notification', routes.gettNotification);
 
 router.use(function (req, res, next) {
 	console.log("I got method " +

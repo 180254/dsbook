@@ -18,7 +18,7 @@ var User = new Schema({
 		type: String,
 		require: false
 	},
-	notyfications: {
+	notifications: {
 		type: String,
 		require: false
 	}

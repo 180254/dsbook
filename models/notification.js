@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 
-var NotyficationSchema = new Schema({
+var NotificationSchema = new Schema({
 	username: {
 		type: String,
 		require: true
@@ -22,4 +22,4 @@ var NotyficationSchema = new Schema({
 	}
 })
 
-module.export = NotyficationSchema
+module.export = NotificationSchema

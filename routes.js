@@ -1,13 +1,13 @@
 var mongoose = require('mongoose');
 
 var User = mongoose.model('User', require('./models/user.js'));
-var Notyfication = mongoose.model('Notyfication', require('./models/notyfication.js'));
+var Notification = mongoose.model('Notification', require('./models/notification.js'));
 
-// post new notyfication
+// post new notification
 // parameters: req.body.username, req.body.body
-exports.postNotyfication = function (req, res, next) {
-	console.log("post notyfication");
-	Notyfication.create({
+exports.postNotification = function (req, res, next) {
+	console.log("post notification");
+	Notification.create({
 		username: req.body.username,
 		body: req.body.body
 	}, function (error, doc) {
@@ -20,16 +20,16 @@ exports.postNotyfication = function (req, res, next) {
 	});
 };
 
-// get all notyfications for porter,
-// when active == 1 then return only active notyfications
-// when active == 0 then return all notyfications
+// get all notifications for porter,
+// when active == 1 then return only active notifications
+// when active == 0 then return all notifications
 // parameters: req.active.active
-exports.getNotyfications = function (req, res, next) {
-	console.log("get notyfications");
+exports.getNotifications = function (req, res, next) {
+	console.log("get notifications");
 	if (req.query.active == undefined) {
 		res.sendStatus(404)
 	} else if (req.query.active) {
-		Notyfication
+		Notification
 			.find({
 				status: "active"
 			}, function (err, docs) {
@@ -41,7 +41,7 @@ exports.getNotyfications = function (req, res, next) {
 				
 			});
 	} else {
-		Notyfication
+		Notification
 			.find({}, function (err, docs) {
 				if (err) {
 					console.log(err)
@@ -53,16 +53,16 @@ exports.getNotyfications = function (req, res, next) {
 	}
 };
 
-// get all notyfications for students,
-// when active == 1 then return only active notyfications
-// when active == 0 then return all notyfications
+// get all notifications for students,
+// when active == 1 then return only active notifications
+// when active == 0 then return all notifications
 // parameters: req.query.active, req.query.username
-exports.gettNotyfication = function (req, res, next) {
-	console.log("get notyfication");
+exports.gettNotification = function (req, res, next) {
+	console.log("get notification");
 	if (req.query.active == undefined || req.query.username == undefined) {
 		res.sendStatus(404)
 	} else if (req.query.active) {
-		Notyfication
+		Notification
 			.find({
 				username: req.query.username,
 				status: "active"
@@ -74,7 +74,7 @@ exports.gettNotyfication = function (req, res, next) {
 				res.send(docs);
 			});
 	} else {
-		Notyfication
+		Notification
 			.find({
 				username: req.query.username
 			}, function (err, docs) {

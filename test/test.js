@@ -2,7 +2,7 @@
 process.env.NODE_ENV = 'test';
 
 let mongoose = require("mongoose");
-let Notyfication = require('../models/notyfication.js');
+let Notification = require('../models/notification.js');
 let routes = require('../routes.js');
 
 //Require the dev-dependencies
@@ -13,13 +13,13 @@ let should = chai.should();
 
 chai.use(chaiHttp);
 //Our parent block
-describe('Notyfication', () => {
+describe('Notification', () => {
 
-	describe('/POST Notyfications', () => {
+	describe('/POST Notifications', () => {
 		it('with parameters is should return 200 status', (done) => {
 			chai
 				.request(server)
-				.post('/notyfications')
+				.post('/notifications')
 				.send({"username": "daa", "body": "asd"})
 				.end((err, res) => {
 					res
@@ -32,7 +32,7 @@ describe('Notyfication', () => {
     it('without parameters is should return 404 status', (done) => {
       chai
         .request(server)
-        .post('/notyfications')
+        .post('/notifications')
         .send({})
         .end((err, res) => {
           res
@@ -45,11 +45,11 @@ describe('Notyfication', () => {
 
 	});
 
-	describe('/GET Notyfications', () => {
+	describe('/GET Notifications', () => {
 		it('wihout set active parameter it should GET 404 status', (done) => {
 			chai
 				.request(server)
-				.get('/notyfications')
+				.get('/notifications')
 				.end((err, res) => {
 					res
 						.should
