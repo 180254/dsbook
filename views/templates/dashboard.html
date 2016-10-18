@@ -1,0 +1,37 @@
+<div ng-controller="DashboardCtrl">
+    Witaj <strong>{{loggedUser}},</strong><br>
+    Poniższy panel służy do wysyłania wiadomosći grupowych do mieszkańców akademików Politechniki Lódzkiej<br>
+    W celu wysłania wiadomosći <strong>wybierz numer pokoju,</strong> następnie <strong>wprowadź treść wiadomosći</strong> i kliknij przycisk <strong>"Wyślij informację"</strong><br><br>
+        <div class="form-group">
+            <label for="selectedRecipient">Informacja dla pokoju numer</label>
+            <input class="form-control"
+                   id="selectedRecipient"
+                   type="text" placeholder="Wprowadź numer pokoju"
+                   uib-typeahead="room.name for room in rooms"
+                   typeahead-editable="false"
+                   ng-model="selectedRoom">
+        </div>
+        <div class="btn-group btn-group-lg">
+            <button type="button" class="btn btn-primary" ng-click="sendPredefinedNotification('pizza')">Pizza</button>
+            <button type="button" class="btn btn-primary" ng-click="sendPredefinedNotification('package')">Paczka</button>
+            <button type="button" class="btn btn-primary" ng-click="sendPredefinedNotification('manager')">Wezwanie do kierownika</button>
+            <button type="button" class="btn btn-primary" ng-click="sendPredefinedNotification('porter')">Wezwanie do portiera</button>
+            <button type="button" class="btn btn-primary" ng-click="showNotificationTextarea = true">Inne</button>
+        </div><br><br>
+        <div ng-if="showNotificationTextarea">
+            <div class="form-group">
+                <label for="messageContent">Inne zgłoszenie</label>
+                <textarea id="messageContent"
+                          class="form-control"
+                          placeholder="Wpisz treść zgłoszenia"
+                          ng-model="notification.notificatonContent"
+                          ng-click="sendNotification()"></textarea>
+            </div>
+            {{notification.notificatonContent}}
+            <button class="btn btn-info pull-right">
+                <i class="fa fa-send" aria-hidden="true"></i>
+                <span>Wyślij zgłoszenie</span>
+            </button>
+            </div>
+<hr>
+</div>
