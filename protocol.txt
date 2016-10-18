@@ -1,0 +1,33 @@
+POST /auth/login
+->    {"username": "?", "password": "?")
+<-(0) {"token": "?", "tokenExpire": "?", "username": "?", "type": "?"}
+<-(1) {}
+- kod: 200 OK
+- jeżeli logowanie się udało, to odpowiedź (0)
+- jeżeli logowanie się nie udało, to odpowiedź (1)
+- [token]: to identifikator, który należy zapisać w ciasteczku
+- [tokenExpire]: to liczba pobrana z Date.getTime (http://www.w3schools.com/jsref/jsref_gettime.asp)
+- [username]: to username
+- [type]: "STUDENT" albo "PORTIER"
+
+POST /auth/verify
+-> {"token": ""}
+- odpowiedź taka sama jak dla auth/login
+- pozwala sprawdzić, czy token jest jeszcze ważny
+- można założyć, że na pewno jest, jeżeli czas tokenExpire nie minął
+
+######################
+
+Każdy inny request, konwencja:
+- token musi być w ciasteczku o nazwie "token"
+- request sobie odbiera token z ciasteczka i go weryfikuje (auth.verifyToken())
+- kod 200 OK: jeżeli wszystko ok
+- kod 401 Unauthorized: token jest błędny/nieważny
+- kod 403 Forbidden: token jest ważny, ale operacja niedozwolona (np. student wyręcza portiera)
+- dla kodu 200 OK przychodzą jakieś dane
+- dla innych kodów zawsze jest pusto
+
+######################
+
+// tu będą opisy dostępnych endpointów, podobnie jak opisany auth
+// może trochę bardziej zwięźle

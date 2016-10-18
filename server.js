@@ -3,7 +3,9 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const serveStatic = require("serve-static");
 const cookieParser = require("cookie-parser");
+
 const routes = require("./routes.js");
+const auth = require("./auth.js");
 
 const dbUri = "mongodb://localhost/dsbook";
 mongoose.connect(dbUri, (err) => {
@@ -22,6 +24,12 @@ const router = express.Router();
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(serveStatic("views", {"index": ["index.html"],}));
+
+router.post("/auth/login", auth.authTokenReq);
+router.post("/auth/verify", auth.checkTokenReq);
+router.post("/auth/test/any", auth.test0Req);
+router.post("/auth/test/portier", auth.test1Req);
+router.post("/auth/test/student", auth.test2Req);
 
 router.post("/notification", routes.postNotification);
 router.get("/notifications", routes.getNotifications);
