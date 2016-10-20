@@ -5,5 +5,7 @@
 > run `npm install -g nodemon`
 
 # Run
+> run MongoDB  
+
 > start app: `npm start`  
 > or start app in dev mode: `nodemon`  
