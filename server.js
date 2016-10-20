@@ -23,7 +23,7 @@ const router = express.Router();
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(serveStatic("views", {"index": ["index.html"],}));
+app.use(serveStatic("view", {"index": ["index.html"]}));
 
 router.post("/auth/login", auth.authTokenReq);
 router.post("/auth/verify", auth.checkTokenReq);
