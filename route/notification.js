@@ -14,11 +14,19 @@ exports.getNotification = function (req, res, next) {
 
 		const reqFilters = req.query;
 
+		// _id is given => must be proper (or 500 is thrown)
+		if (
+			reqFilters._id
+			&& !reqFilters._id.match(/^[0-9a-fA-F]{24}$/)
+		) {
+			res.status(400).send({});
+			return;
+		}
+
 		// room filter is given => should be number-only
 		if (
 			reqFilters.room
-			&& !/^[0-9]+$/.test(reqFilters.room)
-		) {
+			&& !/^[0-9]+$/.test(reqFilters.room)) {
 			res.status(400).send({});
 			return;
 		}
@@ -161,5 +169,55 @@ exports.postNotification = function (req, res, next) {
 				}
 			}
 		);
+	});
+};
+
+// POST /notification/status
+// parameters: req.body._id, req.body.status
+exports.postNotificationStatus = function (req, res, next) {
+	auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
+
+		// both parameters are required
+		if (!req.body._id || !req.body.status) {
+			res.status(400).send({});
+			return;
+		}
+
+		// _id is given => must be proper (or 500 is thrown)
+		if (
+			req.body._id
+			&& !req.body._id.match(/^[0-9a-fA-F]{24}$/)
+		) {
+			res.status(400).send({});
+			return;
+		}
+
+		const mongoFilters = {};
+		mongoFilters._id = req.body._id;
+
+		// user can change only new -> confirmed
+		if (accInfo.accType === auth.accountTypes.STUDENT) {
+			mongoFilters.status = "new";
+		}
+
+		Notification.findOneAndUpdate(
+			mongoFilters,
+			{status: req.body.status},
+			{},
+			(err, doc) => {
+				if (err) {
+					res.status(500).send({});
+					console.log(err);
+					return;
+				}
+
+				if (doc) {
+					doc.status = req.body.status;
+					res.status(200).send(doc);
+				} else {
+					res.status(400).send({});
+				}
+
+			});
 	});
 };

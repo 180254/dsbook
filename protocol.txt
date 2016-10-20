@@ -12,6 +12,11 @@
 
 ######################
 
+- accType może być "STUDENT", albo "PORTIER"
+- status powiadomienia może być "new", "confirmed", "closed"
+
+######################
+
 POST /auth/login
 {
   "username": "201-1",
@@ -84,7 +89,7 @@ GET /notification
 GET /notification
         ?room=401
         &student=401-1
-        &status=new,confirmed,deleted
+        &status=new,confirmed,closed
 [
   {
     "__v": 0,
@@ -109,7 +114,23 @@ GET /notification
 GET /notification/counter
         ?room=401
         &student=401-1
-        &status=new,confirmed,deleted
+        &status=new,confirmed,closed
 {
   "counter": 7
+}
+
+######################
+
+POST /notification/status
+{
+  "_id": "5808e63d1306231b3c9c2a34",
+  "status": "confirmed"
+}
+{
+  "__v": 0,
+  "_id": "5808e63d1306231b3c9c2a34",
+  "user": "201-1",
+  "content": "haha",
+  "date": "2016-10-20T15:44:39.695Z",
+  "status": "confirmed"
 }

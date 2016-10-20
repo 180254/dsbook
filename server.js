@@ -35,6 +35,7 @@ router.get("/auth/test/student", auth.authTestStudentReq);
 router.post("/notification", notification.postNotification);
 router.get("/notification", notification.getNotification);
 router.get("/notification/counter", notification.getNotificationCounter);
+router.post("/notification/status", notification.postNotificationStatus);
 
 const port = process.argv[2] || 3000;
 

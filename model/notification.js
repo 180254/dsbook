@@ -14,7 +14,7 @@ const NotificationSchema = new Schema({
 	},
 	status: { // status
 		type: String,
-		enum: ["new", "confirmed", "deleted"],
+		enum: ["new", "confirmed", "closed"],
 		required: true,
 		default: "new",
 	},
