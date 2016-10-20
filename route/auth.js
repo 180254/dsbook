@@ -176,7 +176,7 @@ exports.authTokenAsync = authTokenAsync;
 exports.checkTokenAsync = checkTokenAsync;
 exports.verifyTokenAsync = verifyTokenAsync;
 
-// GET /auth/login
+// POST /auth/login
 exports.authLoginReq = function (req, res, next) {
 	authTokenAsync(req.body.username, req.body.password)
 		.then((accInfo) => {
@@ -188,7 +188,15 @@ exports.authLoginReq = function (req, res, next) {
 };
 
 
-// GET /auth/verify
+// GET /auth/current
+exports.authCurrentReq = function (req, res, next) {
+	verifyTokenAsync(req, res, next, undefined)
+		.then((accInfo) => {
+			res.send(accInfo);
+		});
+};
+
+// POST /auth/verify
 exports.authVerifyReq = function (req, res, next) {
 	checkTokenAsync(req.body.token)
 		.then((accInfo) => {

@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 const serveStatic = require("serve-static");
 const cookieParser = require("cookie-parser");
 
-const routes = require("./route/notification.js");
 const auth = require("./route/auth.js");
+const notification = require("./route/notification.js");
 
 const dbUri = "mongodb://localhost/dsbook";
 mongoose.connect(dbUri, (err) => {
@@ -26,14 +26,15 @@ app.use(cookieParser());
 app.use(serveStatic("view", {"index": ["index.html"]}));
 
 router.post("/auth/login", auth.authLoginReq);
+router.post("/auth/current", auth.authCurrentReq);
 router.post("/auth/verify", auth.authVerifyReq);
 router.get("/auth/test/any", auth.authTestAnyReq);
 router.get("/auth/test/portier", auth.authTestPortierReq);
 router.get("/auth/test/student", auth.authTestStudentReq);
 
-router.post("/notification", routes.postNotification);
-router.get("/notification", routes.getNotification);
-router.get("/notification/counter", routes.getNotificationCounter);
+router.post("/notification", notification.postNotification);
+router.get("/notification", notification.getNotification);
+router.get("/notification/counter", notification.getNotificationCounter);
 
 const port = process.argv[2] || 3000;
 

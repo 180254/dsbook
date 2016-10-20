@@ -26,6 +26,17 @@ POST /auth/login
 
 ######################
 
+GET /auth/current
+{
+  "token": "0.izc52j5t4h794xxm1gr13v7vi",
+  "tokenExpire": 1477583500160,
+  "user": "201-1",
+  "accType": "STUDENT"
+}
+
+
+######################
+
 POST /auth/verify
 {
     "token": "0.izc52j5t4h794xxm1gr13v7vi"
