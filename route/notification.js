@@ -40,10 +40,15 @@ exports.getNotification = function (req, res, next) {
 			return;
 		}
 
+		// status should be array: , splitter string
+		reqFilters.status = reqFilters.status
+			? reqFilters.status.split(",")
+			: undefined;
+
 		// status filter is given => status must be have proper value
 		if (
 			reqFilters.status
-			&& !Notification.schema.path('status').enumValues.includes(reqFilters.status)
+			&& reqFilters.status.some(s => !Notification.schema.path('status').enumValues.includes(s))
 		) {
 			res.status(400).send({});
 			return;
@@ -52,7 +57,7 @@ exports.getNotification = function (req, res, next) {
 		const mongoFilters = {};
 		reqFilters._id && (mongoFilters._id = reqFilters._id);
 		reqFilters.user && (mongoFilters.user = reqFilters.user);
-		reqFilters.status && (mongoFilters.status = reqFilters.status);
+		reqFilters.status && (mongoFilters.status = {"$in": reqFilters.status});
 
 		Notification
 			.find(
@@ -85,11 +90,15 @@ exports.getNotificationCounter = function (req, res, next) {
 			res.status(403).send({});
 			return;
 		}
+		// status should be array: , splitter string
+		reqFilters.status = reqFilters.status
+			? reqFilters.status.split(",")
+			: undefined;
 
 		// status filter is given => status must be have proper value
 		if (
 			reqFilters.status
-			&& !Notification.schema.path('status').enumValues.includes(reqFilters.status)
+			&& reqFilters.status.some(s => !Notification.schema.path('status').enumValues.includes(s))
 		) {
 			res.status(400).send({});
 			return;
@@ -97,7 +106,7 @@ exports.getNotificationCounter = function (req, res, next) {
 
 		const mongoFilters = {};
 		reqFilters.user && (mongoFilters.user = reqFilters.user);
-		reqFilters.status && (mongoFilters.status = reqFilters.status);
+		reqFilters.status && (mongoFilters.status = {"$in": reqFilters.status});
 
 		Notification
 			.count(

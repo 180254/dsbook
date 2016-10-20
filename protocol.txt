@@ -83,7 +83,7 @@ GET /notification
 
 GET /notification
         ?student=401-1
-        ?status=new/confirmed/deleted
+        ?status=new,confirmed,deleted
 [
   {
     "__v": 0,
@@ -107,7 +107,7 @@ GET /notification
 
 GET /notification/counter
         ?student=401-1
-        ?status=new/confirmed/deleted
+        ?status=new,confirmed,deleted
 {
   "counter": 7
 }
