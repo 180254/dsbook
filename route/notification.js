@@ -8,15 +8,16 @@ const Notification = mongoose.model("Notification", require("./../model/notifica
 
 
 // GET /notification
-// parameters: req.query._id, req.query.user, req.query.status
+// parameters: req.query._id, req.query.room, req.query.user, req.query.status
 exports.getNotification = function (req, res, next) {
 	auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
 
 		const reqFilters = req.query;
 
-		// _id filter is given => other filters are not allowed at the same time
+		// room filter is given => should be number-only
 		if (
-			reqFilters._id && (reqFilters.user || reqFilters.status)
+			reqFilters.room
+			&& !/^[0-9]+$/.test(reqFilters.room)
 		) {
 			res.status(400).send({});
 			return;
@@ -40,7 +41,7 @@ exports.getNotification = function (req, res, next) {
 			return;
 		}
 
-		// status should be array: , splitter string
+		// status should be array: semicolon separated string
 		reqFilters.status = reqFilters.status
 			? reqFilters.status.split(",")
 			: undefined;
@@ -56,6 +57,7 @@ exports.getNotification = function (req, res, next) {
 
 		const mongoFilters = {};
 		reqFilters._id && (mongoFilters._id = reqFilters._id);
+		reqFilters.room && (mongoFilters.user = new RegExp(String.raw`^${reqFilters.room}\-?\d*$`));
 		reqFilters.user && (mongoFilters.user = reqFilters.user);
 		reqFilters.status && (mongoFilters.status = {"$in": reqFilters.status});
 
@@ -76,11 +78,20 @@ exports.getNotification = function (req, res, next) {
 };
 
 // GET /notification/counter
-// parameters: req.query.user, req.query.status
+// parameters: req.query.room, req.query.user, req.query.status
 exports.getNotificationCounter = function (req, res, next) {
 	auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
 
 		const reqFilters = req.query;
+
+		// room filter is given => should be number-only
+		if (
+			reqFilters.room
+			&& !/^[0-9]+$/.test(reqFilters.room)
+		) {
+			res.status(400).send({});
+			return;
+		}
 
 		// user filter is not given => requester must be portier
 		if (
@@ -90,7 +101,7 @@ exports.getNotificationCounter = function (req, res, next) {
 			res.status(403).send({});
 			return;
 		}
-		// status should be array: , splitter string
+		// status should be array: semicolon separated string
 		reqFilters.status = reqFilters.status
 			? reqFilters.status.split(",")
 			: undefined;
@@ -105,6 +116,7 @@ exports.getNotificationCounter = function (req, res, next) {
 		}
 
 		const mongoFilters = {};
+		reqFilters.room && (mongoFilters.user = new RegExp(String.raw`^${reqFilters.room}\-?\d*$`));
 		reqFilters.user && (mongoFilters.user = reqFilters.user);
 		reqFilters.status && (mongoFilters.status = {"$in": reqFilters.status});
 
