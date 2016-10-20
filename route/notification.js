@@ -3,8 +3,8 @@
 const mongoose = require("mongoose");
 const auth = require("./auth");
 
-const User = mongoose.model("User", require("./../model/user.js"));
-const Notification = mongoose.model("Notification", require("./../model/notification.js"));
+const NotificationSchema = require("./../model/notification.js");
+const Notification = mongoose.model("Notification", NotificationSchema);
 
 
 // GET /notification
@@ -12,12 +12,12 @@ const Notification = mongoose.model("Notification", require("./../model/notifica
 exports.getNotification = function (req, res, next) {
 	auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
 
-		const reqFilters = req.query;
+		const reqParam = req.query;
 
 		// _id is given => must be proper (or 500 is thrown)
 		if (
-			reqFilters._id
-			&& !reqFilters._id.match(/^[0-9a-fA-F]{24}$/)
+			reqParam._id
+			&& !reqParam._id.match(/^[0-9a-fA-F]{24}$/)
 		) {
 			res.status(400).send({});
 			return;
@@ -25,15 +25,15 @@ exports.getNotification = function (req, res, next) {
 
 		// room filter is given => should be number-only
 		if (
-			reqFilters.room
-			&& !/^[0-9]+$/.test(reqFilters.room)) {
+			reqParam.room
+			&& !/^[0-9]+$/.test(reqParam.room)) {
 			res.status(400).send({});
 			return;
 		}
 
 		// user filter is not given => requester must be portier
 		if (
-			!reqFilters.user
+			!reqParam.user
 			&& !(accInfo.accType === auth.accountTypes.PORTIER)
 		) {
 			res.status(403).send({});
@@ -42,46 +42,45 @@ exports.getNotification = function (req, res, next) {
 
 		// user filter is given => requester must be portier or student must ask about yourself
 		if (
-			reqFilters.user
-			&& !(accInfo.accType === auth.accountTypes.PORTIER || reqFilters.user === accInfo.user)
+			reqParam.user
+			&& !(accInfo.accType === auth.accountTypes.PORTIER || reqParam.user === accInfo.user)
 		) {
 			res.status(403).send({});
 			return;
 		}
 
 		// status should be array: semicolon separated string
-		reqFilters.status = reqFilters.status
-			? reqFilters.status.split(",")
+		reqParam.status = reqParam.status
+			? reqParam.status.split(",")
 			: undefined;
 
 		// status filter is given => status must be have proper value
 		if (
-			reqFilters.status
-			&& reqFilters.status.some(s => !Notification.schema.path('status').enumValues.includes(s))
+			reqParam.status
+			&& reqParam.status.some(s => !Notification.schema.path('status').enumValues.includes(s))
 		) {
 			res.status(400).send({});
 			return;
 		}
 
 		const mongoFilters = {};
-		reqFilters._id && (mongoFilters._id = reqFilters._id);
-		reqFilters.room && (mongoFilters.user = new RegExp(String.raw`^${reqFilters.room}\-?\d*$`));
-		reqFilters.user && (mongoFilters.user = reqFilters.user);
-		reqFilters.status && (mongoFilters.status = {"$in": reqFilters.status});
+		reqParam._id && (mongoFilters._id = reqParam._id);
+		reqParam.room && (mongoFilters.user = new RegExp(String.raw`^${reqParam.room}\-?\d*$`));
+		reqParam.user && (mongoFilters.user = reqParam.user);
+		reqParam.status && (mongoFilters.status = {"$in": reqParam.status});
 
-		Notification
-			.find(
-				mongoFilters,
-				(err, docs) => {
-					if (err) {
-						res.status(500).send({});
-						console.log(err);
-						return;
-					}
-
-					res.status(200).send(docs);
+		Notification.find(
+			mongoFilters,
+			(err, docs) => {
+				if (err) {
+					res.status(500).send({});
+					console.log(err);
+					return;
 				}
-			);
+
+				res.status(200).send(docs);
+			}
+		);
 	})
 };
 
@@ -90,12 +89,12 @@ exports.getNotification = function (req, res, next) {
 exports.getNotificationCounter = function (req, res, next) {
 	auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
 
-		const reqFilters = req.query;
+		const reqParam = req.query;
 
 		// room filter is given => should be number-only
 		if (
-			reqFilters.room
-			&& !/^[0-9]+$/.test(reqFilters.room)
+			reqParam.room
+			&& !/^[0-9]+$/.test(reqParam.room)
 		) {
 			res.status(400).send({});
 			return;
@@ -103,44 +102,43 @@ exports.getNotificationCounter = function (req, res, next) {
 
 		// user filter is not given => requester must be portier
 		if (
-			!reqFilters.user
+			!reqParam.user
 			&& !(accInfo.accType === auth.accountTypes.PORTIER)
 		) {
 			res.status(403).send({});
 			return;
 		}
 		// status should be array: semicolon separated string
-		reqFilters.status = reqFilters.status
-			? reqFilters.status.split(",")
+		reqParam.status = reqParam.status
+			? reqParam.status.split(",")
 			: undefined;
 
 		// status filter is given => status must be have proper value
 		if (
-			reqFilters.status
-			&& reqFilters.status.some(s => !Notification.schema.path('status').enumValues.includes(s))
+			reqParam.status
+			&& reqParam.status.some(s => !Notification.schema.path('status').enumValues.includes(s))
 		) {
 			res.status(400).send({});
 			return;
 		}
 
 		const mongoFilters = {};
-		reqFilters.room && (mongoFilters.user = new RegExp(String.raw`^${reqFilters.room}\-?\d*$`));
-		reqFilters.user && (mongoFilters.user = reqFilters.user);
-		reqFilters.status && (mongoFilters.status = {"$in": reqFilters.status});
+		reqParam.room && (mongoFilters.user = new RegExp(String.raw`^${reqParam.room}\-?\d*$`));
+		reqParam.user && (mongoFilters.user = reqParam.user);
+		reqParam.status && (mongoFilters.status = {"$in": reqParam.status});
 
-		Notification
-			.count(
-				mongoFilters,
-				(err, count) => {
-					if (err) {
-						res.status(500).send({});
-						console.log(err);
-						return;
-					}
-
-					res.status(200).send({counter: count})
+		Notification.count(
+			mongoFilters,
+			(err, count) => {
+				if (err) {
+					res.status(500).send({});
+					console.log(err);
+					return;
 				}
-			);
+
+				res.status(200).send({counter: count})
+			}
+		);
 	})
 };
 
@@ -149,9 +147,11 @@ exports.getNotificationCounter = function (req, res, next) {
 exports.postNotification = function (req, res, next) {
 	auth.verifyTokenAsync(req, res, next, auth.accountTypes.PORTIER).then((accInfo) => {
 
+		const reqParam = req.body;
+
 		const newNotification = new Notification({
-			user: req.body.user,
-			content: req.body.content
+			user: reqParam.user,
+			content: reqParam.content
 		});
 
 		var error = newNotification.validateSync(undefined);
@@ -177,23 +177,25 @@ exports.postNotification = function (req, res, next) {
 exports.postNotificationStatus = function (req, res, next) {
 	auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
 
+		const reqParam = req.body;
+
 		// both parameters are required
-		if (!req.body._id || !req.body.status) {
+		if (!reqParam._id || !reqParam.status) {
 			res.status(400).send({});
 			return;
 		}
 
 		// _id is given => must be proper (or 500 is thrown)
 		if (
-			req.body._id
-			&& !req.body._id.match(/^[0-9a-fA-F]{24}$/)
+			reqParam._id
+			&& !reqParam._id.match(/^[0-9a-fA-F]{24}$/)
 		) {
 			res.status(400).send({});
 			return;
 		}
 
 		const mongoFilters = {};
-		mongoFilters._id = req.body._id;
+		mongoFilters._id = reqParam._id;
 
 		// user can change only new -> confirmed
 		if (accInfo.accType === auth.accountTypes.STUDENT) {
@@ -202,7 +204,7 @@ exports.postNotificationStatus = function (req, res, next) {
 
 		Notification.findOneAndUpdate(
 			mongoFilters,
-			{status: req.body.status},
+			{status: reqParam.status},
 			{},
 			(err, doc) => {
 				if (err) {
@@ -212,12 +214,11 @@ exports.postNotificationStatus = function (req, res, next) {
 				}
 
 				if (doc) {
-					doc.status = req.body.status;
+					doc.status = reqParam.status;
 					res.status(200).send(doc);
 				} else {
 					res.status(400).send({});
 				}
-
 			});
 	});
 };

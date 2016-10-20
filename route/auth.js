@@ -43,6 +43,8 @@ const predefAccount = [
 
 // ###################################################################################################################
 
+const userRoute = require("./user.js");
+
 /**
  * Do user authentication.
  *
@@ -76,6 +78,7 @@ function authTokenAsync(username, password) {
 
 			const nextToken = _nextRandomToken();
 			tokensMap.set(nextToken, username);
+			userRoute.findOrCreate(username);
 
 			return {
 				token: nextToken,

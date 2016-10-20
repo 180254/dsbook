@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-	id: { // 304-1
+	user: { // 304-1
 		type: String,
 		required: true
 	},

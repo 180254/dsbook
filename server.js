@@ -1,11 +1,14 @@
+"use strict";
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const serveStatic = require("serve-static");
 const cookieParser = require("cookie-parser");
 
-const auth = require("./route/auth.js");
-const notification = require("./route/notification.js");
+const authRoute = require("./route/auth.js");
+const notificationRoute = require("./route/notification.js");
+const userRoute = require("./route/user.js");
 
 const dbUri = "mongodb://localhost/dsbook";
 mongoose.connect(dbUri, (err) => {
@@ -25,17 +28,19 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(serveStatic("view", {"index": ["index.html"]}));
 
-router.post("/auth/login", auth.authLoginReq);
-router.post("/auth/current", auth.authCurrentReq);
-router.post("/auth/verify", auth.authVerifyReq);
-router.get("/auth/test/any", auth.authTestAnyReq);
-router.get("/auth/test/portier", auth.authTestPortierReq);
-router.get("/auth/test/student", auth.authTestStudentReq);
+router.post("/auth/login", authRoute.authLoginReq);
+router.post("/auth/current", authRoute.authCurrentReq);
+router.post("/auth/verify", authRoute.authVerifyReq);
+router.get("/auth/test/any", authRoute.authTestAnyReq);
+router.get("/auth/test/portier", authRoute.authTestPortierReq);
+router.get("/auth/test/student", authRoute.authTestStudentReq);
 
-router.post("/notification", notification.postNotification);
-router.get("/notification", notification.getNotification);
-router.get("/notification/counter", notification.getNotificationCounter);
-router.post("/notification/status", notification.postNotificationStatus);
+router.post("/notification", notificationRoute.postNotification);
+router.get("/notification", notificationRoute.getNotification);
+router.get("/notification/counter", notificationRoute.getNotificationCounter);
+router.post("/notification/status", notificationRoute.postNotificationStatus);
+
+router.get("/user", userRoute.getUser);
 
 const port = process.argv[2] || 3000;
 

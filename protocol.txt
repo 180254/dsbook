@@ -134,3 +134,19 @@ POST /notification/status
   "date": "2016-10-20T15:44:39.695Z",
   "status": "confirmed"
 }
+
+######################
+
+GET /user
+    ?user=201-1
+[
+  {
+    "__v": 0
+    "_id": "58091287c1a2000ee478a3d5",
+    "user": "201-1",
+    "name": "Johny",
+    "surname": "English",
+    "mobile": "500200100",
+    "email": "johny.english@gmail.com
+  }
+]
