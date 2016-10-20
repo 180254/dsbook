@@ -25,11 +25,11 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(serveStatic("view", {"index": ["index.html"]}));
 
-router.post("/auth/login", auth.authTokenReq);
-router.post("/auth/verify", auth.checkTokenReq);
-router.post("/auth/test/any", auth.test0Req);
-router.post("/auth/test/portier", auth.test1Req);
-router.post("/auth/test/student", auth.test2Req);
+router.post("/auth/login", auth.authLoginReq);
+router.post("/auth/verify", auth.authVerifyReq);
+router.get("/auth/test/any", auth.authTestAnyReq);
+router.get("/auth/test/portier", auth.authTestPortierReq);
+router.get("/auth/test/student", auth.authTestStudentReq);
 
 router.post("/notification", routes.postNotification);
 router.get("/notifications", routes.getNotifications);

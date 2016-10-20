@@ -1,3 +1,5 @@
+"use strict";
+
 const NodeCache = require("node-cache");
 
 const tokensMap = new NodeCache({
@@ -7,6 +9,9 @@ const tokensMap = new NodeCache({
 
 // ###################################################################################################################
 
+/**
+ * @enum {string}
+ */
 const accountTypes = {
 	PORTIER: "PORTIER",
 	STUDENT: "STUDENT"
@@ -30,82 +35,94 @@ const predefAccount = [
  * @property {string} accType
  */
 
-/***
- * @callback requestCallback
- * @param {AccountInfo} accInfo
- */
-
 // ###################################################################################################################
 
 /**
  * @param {string|undefined|null} username
  * @param {string|undefined|null} password
- * @return {boolean}
+ * @return {Promise<undefined,undefined>}
  */
-function auth(username, password) {
-	// TODO: implement real auth logic
-	return true;
+function authAsync(username, password) {
+	return new Promise((resolve, reject) => {
+
+		if (username && password) {
+			// TODO: implement real auth logic
+			resolve();
+		} else {
+			reject();
+		}
+	});
 }
 
 /**
  * @param {string|undefined|null} username
  * @param {string|undefined|null} password
- * @return {AccountInfo|undefined}
+ * @return {Promise<AccountInfo, undefined>}
  */
-function authToken(username, password) {
-	if (username && password && auth(username, password)) {
+function authTokenAsync(username, password) {
+	return authAsync(username, password)
+		.then(() => {
 
-		const nextToken = _nextRandomToken();
-		tokensMap.set(nextToken, username);
+			const nextToken = _nextRandomToken();
+			tokensMap.set(nextToken, username);
 
-		return {
-			token: nextToken,
-			tokenExpire: tokensMap.getTtl(nextToken),
-			username: username,
-			accType: _accountType(username)
-		};
-
-	} else {
-		return undefined;
-	}
+			return {
+				token: nextToken,
+				tokenExpire: tokensMap.getTtl(nextToken),
+				username: username,
+				accType: _accountType(username)
+			};
+		});
 }
 
 /**
  * @param {string|undefined|null} token
- * @return {AccountInfo|undefined}
+ * @return {Promise<AccountInfo, undefined>}
  */
-function checkToken(token) {
-	if (!token) return undefined;
-	const username = tokensMap.get(token);
-	if (!username) return undefined;
+function checkTokenAsync(token) {
+	return new Promise((resolve, reject) => {
 
-	return {
-		token: token,
-		tokenExpire: tokensMap.getTtl(token),
-		username: username,
-		accType: _accountType(username)
-	};
+		tokensMap.get(token || "", (err, value) => {
+			if (!err && value !== undefined) {
+				const username = value;
+				resolve({
+					token: token,
+					tokenExpire: tokensMap.getTtl(token),
+					username: username,
+					accType: _accountType(username)
+				});
+
+			} else {
+				reject();
+			}
+		});
+	});
 }
 
 /**
- *
  * @param {Object} req
  * @param {Object} res
  * @param {Object} next
  * @param {string|undefined|null} accType
- * @param {requestCallback} onSuccess
+ * @return {Promise<AccountInfo, undefined>}
  */
-function verifyToken(req, res, next, accType, onSuccess) {
+function verifyTokenAsync(req, res, next, accType) {
 	const token = req.cookies.token || req.query.token;
-	const accInfo = checkToken(token);
 
-	if (!accInfo) {
-		res.sendStatus(401); // Unauthorized
-	} else if (accType && accInfo.accType !== accType) {
-		res.sendStatus(403); // Forbidden
-	} else {
-		onSuccess(accInfo);
-	}
+	return checkTokenAsync(token)
+		.then((accInfo) => {
+			if (accType && accInfo.accType !== accType) {
+				res.status(403/*Forbidden*/).send({});
+				throw undefined;
+			}
+
+			return accInfo;
+
+		})
+		.catch((err) => {
+			res.status(401/*Unauthorized*/).send({});
+			throw err;
+		});
 }
 
 // ###################################################################################################################
@@ -137,37 +154,51 @@ function _accountType(username) {
 
 // ###################################################################################################################
 
-exports.authToken = authToken;
-exports.checkToken = checkToken;
-exports.verifyToken = verifyToken;
+exports.authTokenAsync = authTokenAsync;
+exports.checkTokenAsync = checkTokenAsync;
+exports.verifyTokenAsync = verifyTokenAsync;
 
-exports.authTokenReq = function (req, res, next) {
-	res.send(
-		authToken(req.body.username, req.body.password) || {}
-	);
+exports.authLoginReq = function (req, res, next) {
+	authTokenAsync(req.body.username, req.body.password)
+		.then((accInfo) => {
+			res.status(200).send(accInfo);
+		})
+		.catch(() => {
+			res.status(400).send({});
+		});
 };
 
 
-exports.checkTokenReq = function (req, res, next) {
-	res.send(
-		checkToken(req.body.token) || {}
-	);
+exports.authVerifyReq = function (req, res, next) {
+	checkTokenAsync(req.body.token)
+		.then((accInfo) => {
+			res.status(200).send(accInfo);
+		})
+		.catch(() => {
+			res.status(400).send({});
+		});
 };
 
-exports.test0Req = function (req, res, next) {
-	verifyToken(req, res, next, undefined, (accInfo) => {
-		res.send("Welcome authorized (ANYBODY = " + accInfo.accType + ")")
-	})
+exports.authTestAnyReq = function (req, res, next) {
+	verifyTokenAsync(req, res, next, undefined)
+		.then((accInfo) => {
+			const accInfoJson = JSON.stringify(accInfo);
+			res.send(`Welcome authorized.\n${accInfoJson}`);
+		});
 };
 
-exports.test1Req = function (req, res, next) {
-	verifyToken(req, res, next, accountTypes.PORTIER, (accInfo) => {
-		res.send("Welcome authorized (PORTIER = " + accInfo.accType + ")")
-	})
+exports.authTestPortierReq = function (req, res, next) {
+	verifyTokenAsync(req, res, next, accountTypes.PORTIER)
+		.then((accInfo) => {
+			const accInfoJson = JSON.stringify(accInfo);
+			res.send(`Welcome authorized.\n${accInfoJson}`);
+		})
 };
 
-exports.test2Req = function (req, res, next) {
-	verifyToken(req, res, next, accountTypes.STUDENT, (accInfo) => {
-		res.send("Welcome authorized (STUDENT = " + accInfo.accType + ")")
-	})
+exports.authTestStudentReq = function (req, res, next) {
+	verifyTokenAsync(req, res, next, accountTypes.STUDENT)
+		.then((accInfo) => {
+			const accInfoJson = JSON.stringify(accInfo);
+			res.send(`Welcome authorized.\n${accInfoJson}`);
+		})
 };
