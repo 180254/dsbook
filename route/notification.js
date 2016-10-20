@@ -164,9 +164,10 @@ exports.postNotification = function (req, res, next) {
 				if (err) {
 					console.log(err);
 					res.status(500).send({});
-				} else {
-					res.status(201).send(doc);
+					return;
 				}
+
+				res.status(200).send(doc);
 			}
 		);
 	});

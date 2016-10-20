@@ -9,8 +9,8 @@ const tokensMap = new NodeCache({
 
 // TODO remove as TEST TEST TEST
 tokensMap.set("token-portier", "portier");
-tokensMap.set("token-student1", "201-1");
-tokensMap.set("token-student2", "302-2");
+tokensMap.set("token-student-1", "201-1");
+tokensMap.set("token-student-2", "302-2");
 // TEST TEST TEST
 
 // ###################################################################################################################

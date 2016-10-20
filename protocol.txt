@@ -150,3 +150,23 @@ GET /user
     "email": "johny.english@gmail.com
   }
 ]
+
+######################
+
+POST /user/update
+{
+  "user": "201-1",
+  "name": "JohnyX",
+  "surname": "EnglishX",
+  "mobile": "500200101",
+  "email": "johny.englishX@gmail.com"
+}
+{
+  "__v": 0
+  "_id": "58091287c1a2000ee478a3d5",
+  "user": "201-1",
+  "name": "JohnyX",
+  "surname": "EnglishX",
+  "mobile": "500200101",
+  "email": "johny.englishX@gmail.com
+}

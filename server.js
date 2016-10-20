@@ -41,6 +41,7 @@ router.get("/notification/counter", notificationRoute.getNotificationCounter);
 router.post("/notification/status", notificationRoute.postNotificationStatus);
 
 router.get("/user", userRoute.getUser);
+router.post("/user/update", userRoute.postUserUpdate);
 
 const port = process.argv[2] || 3000;
 
