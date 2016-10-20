@@ -7,6 +7,12 @@ const tokensMap = new NodeCache({
 	checkperiod: 86400 /* check every one day */
 });
 
+// TODO remove as TEST TEST TEST
+tokensMap.set("token-portier", "portier");
+tokensMap.set("token-student1", "201-1");
+tokensMap.set("token-student2", "302-2");
+// TEST TEST TEST
+
 // ###################################################################################################################
 
 /**
@@ -31,13 +37,15 @@ const predefAccount = [
  * @typedef {Object} AccountInfo
  * @property {string} token
  * @property {number} tokenExpire
- * @property {string} username
+ * @property {string} user
  * @property {string} accType
  */
 
 // ###################################################################################################################
 
 /**
+ * Do user authentication.
+ *
  * @param {string|undefined|null} username
  * @param {string|undefined|null} password
  * @return {Promise<undefined,undefined>}
@@ -55,6 +63,9 @@ function authAsync(username, password) {
 }
 
 /**
+ *
+ * Do user authentication & generate session token.
+ *
  * @param {string|undefined|null} username
  * @param {string|undefined|null} password
  * @return {Promise<AccountInfo, undefined>}
@@ -69,13 +80,15 @@ function authTokenAsync(username, password) {
 			return {
 				token: nextToken,
 				tokenExpire: tokensMap.getTtl(nextToken),
-				username: username,
+				user: username,
 				accType: _accountType(username)
 			};
 		});
 }
 
 /**
+ * Check if session token is proper and retrieve account info.
+ *
  * @param {string|undefined|null} token
  * @return {Promise<AccountInfo, undefined>}
  */
@@ -88,7 +101,7 @@ function checkTokenAsync(token) {
 				resolve({
 					token: token,
 					tokenExpire: tokensMap.getTtl(token),
-					username: username,
+					user: username,
 					accType: _accountType(username)
 				});
 
@@ -100,6 +113,9 @@ function checkTokenAsync(token) {
 }
 
 /**
+ * Pre-authenticate request.
+ * Check if user is logged in and (optionally) has specific account type.
+ *
  * @param {Object} req
  * @param {Object} res
  * @param {Object} next
@@ -128,6 +144,7 @@ function verifyTokenAsync(req, res, next, accType) {
 // ###################################################################################################################
 
 /**
+ * Randomize next session token. It is guaranteed that token is unique.
  * @return {string} randomized token
  */
 function _nextRandomToken() {
@@ -139,25 +156,27 @@ function _nextRandomToken() {
 }
 
 /**
+ * Check type of account for specific username.
+ *
  * @param {string} username proper (already validated) username
  * @return {string} account type
  */
 function _accountType(username) {
 	const filtered = predefAccount.filter(a => a.username === username);
 
-	if (filtered.length > 0) {
-		return filtered[0].accType;
-	} else {
-		return accountTypes.STUDENT;
-	}
+	return filtered.length > 0
+		? filtered[0].accType
+		: accountTypes.STUDENT;
 }
 
 // ###################################################################################################################
 
+exports.accountTypes = accountTypes;
 exports.authTokenAsync = authTokenAsync;
 exports.checkTokenAsync = checkTokenAsync;
 exports.verifyTokenAsync = verifyTokenAsync;
 
+// GET /auth/login
 exports.authLoginReq = function (req, res, next) {
 	authTokenAsync(req.body.username, req.body.password)
 		.then((accInfo) => {
@@ -169,6 +188,7 @@ exports.authLoginReq = function (req, res, next) {
 };
 
 
+// GET /auth/verify
 exports.authVerifyReq = function (req, res, next) {
 	checkTokenAsync(req.body.token)
 		.then((accInfo) => {
@@ -179,26 +199,26 @@ exports.authVerifyReq = function (req, res, next) {
 		});
 };
 
+// GET /auth/test/any
 exports.authTestAnyReq = function (req, res, next) {
 	verifyTokenAsync(req, res, next, undefined)
 		.then((accInfo) => {
-			const accInfoJson = JSON.stringify(accInfo);
-			res.send(`Welcome authorized.\n${accInfoJson}`);
+			res.send(accInfo);
 		});
 };
 
+// GET /auth/test/portier
 exports.authTestPortierReq = function (req, res, next) {
 	verifyTokenAsync(req, res, next, accountTypes.PORTIER)
 		.then((accInfo) => {
-			const accInfoJson = JSON.stringify(accInfo);
-			res.send(`Welcome authorized.\n${accInfoJson}`);
+			res.send(accInfo);
 		})
 };
 
+// GET /auth/test/student
 exports.authTestStudentReq = function (req, res, next) {
 	verifyTokenAsync(req, res, next, accountTypes.STUDENT)
 		.then((accInfo) => {
-			const accInfoJson = JSON.stringify(accInfo);
-			res.send(`Welcome authorized.\n${accInfoJson}`);
+			res.send(accInfo);
 		})
 };

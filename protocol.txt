@@ -1,33 +1,102 @@
+- 200 OK: ok, przychodzą dane, w szczególności puste (pusta tablica)
+
+- 400 Bad Request: brakuje wymaganego pola, albo jakieś jest niepoprawne
+- 400 Bad Request: także w /auth/login jak się nie uda zalogować (dane niepoprawne)
+
+- 401 Unauthorized: użytkownik niezalogoway, token nieważny
+- 403 Forbidden: użytkownik zalogowany, token ważny, ale brak uprawnień do tej operacji
+
+- 500 Internal Server Error: się coś popsuło, nie powinno się zdarzyć
+
+- kod != 200 zawsze przychodzi pusty obiekt {}
+
+######################
+
 POST /auth/login
-->    {"username": "?", "password": "?")
-<-(0) {"token": "?", "tokenExpire": "?", "username": "?", "type": "?"}
-<-(1) {}
-- kod: 200 OK
-- jeżeli logowanie się udało, to odpowiedź (0)
-- jeżeli logowanie się nie udało, to odpowiedź (1)
-- [token]: to identifikator, który należy zapisać w ciasteczku
-- [tokenExpire]: to liczba pobrana z Date.getTime (http://www.w3schools.com/jsref/jsref_gettime.asp)
-- [username]: to username
-- [type]: "STUDENT" albo "PORTIER"
+{
+  "username": "201-1",
+  "password": "zdzichu"
+}
+{
+  "token": "0.izc52j5t4h794xxm1gr13v7vi",
+  "tokenExpire": 1477583500160,
+  "user": "201-1",
+  "accType": "STUDENT"
+}
+
+######################
 
 POST /auth/verify
--> {"token": ""}
-- odpowiedź taka sama jak dla auth/login
-- pozwala sprawdzić, czy token jest jeszcze ważny
-- można założyć, że na pewno jest, jeżeli czas tokenExpire nie minął
+{
+    "token": "0.izc52j5t4h794xxm1gr13v7vi"
+}
+{
+  "token": "0.izc52j5t4h794xxm1gr13v7vi",
+  "tokenExpire": 1477583500160,
+  "user": "201-1",
+  "accType": "STUDENT"
+}
 
 ######################
 
-Każdy inny request, konwencja:
-- token musi być w ciasteczku o nazwie "token"
-- request sobie odbiera token z ciasteczka i go weryfikuje (auth.verifyToken())
-- kod 200 OK: jeżeli wszystko ok
-- kod 401 Unauthorized: token jest błędny/nieważny
-- kod 403 Forbidden: token jest ważny, ale operacja niedozwolona (np. student wyręcza portiera)
-- dla kodu 200 OK przychodzą jakieś dane
-- dla innych kodów zawsze jest pusto
+POST /notification
+{
+    "user": "201-1",
+    "content": "haha, pizza"
+}
+{
+  "__v": 0,
+  "_id": "5808e6671306231b3c9c2a35",
+  "user": "201-1",
+  "content": "haha",
+  "date": "2016-10-20T15:44:39.695Z",
+  "status": "new"
+}
 
 ######################
 
-// tu będą opisy dostępnych endpointów, podobnie jak opisany auth
-// może trochę bardziej zwięźle
+GET /notification
+    ?_id=5808e6671306231b3c9c2a35
+[
+  {
+    "__v": 0,
+    "_id": "5808e6671306231b3c9c2a35",
+    "user": "201-1",
+    "content": "haha, pizza",
+    "date": "2016-10-20T15:43:57.065Z",
+    "status": "new"
+  }
+]
+
+######################
+
+GET /notification
+        ?student=401-1
+        ?status=new/confirmed/deleted
+[
+  {
+    "__v": 0,
+    "_id": "5808e63d1306231b3c9c2a34",
+    "user": "201-1",
+    "content": "haha, pizza",
+    "date": "2016-10-20T15:43:57.065Z",
+    "status": "new"
+  },
+  {
+    "__v": 0,
+    "_id": "5808e6671306231b3c9c2a35",
+    "user": "201-2",
+    "content": "haha, other pizza",
+    "date": "2016-10-20T15:44:39.695Z",
+    "status": "new"
+  }
+]
+
+######################
+
+GET /notification/counter
+        ?student=401-1
+        ?status=new/confirmed/deleted
+{
+  "counter": 7
+}

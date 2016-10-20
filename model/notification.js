@@ -1,25 +1,30 @@
+"use strict";
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const NotificationSchema = new Schema({
-	username: {
+	user: { // 304-1
 		type: String,
-		require: true
+		required: true
 	},
-	body: {
+	content: { // pizza
 		type: String,
-		require: true
+		required: true
 	},
-	status: {
+	status: { // status
 		type: String,
-		require: true,
-		default: "active"
+		enum: ["new", "confirmed", "deleted"],
+		required: true,
+		default: "new",
 	},
-	date: {
+	date: { // when created
 		type: Date,
-		require: true,
+		required: true,
 		default: Date.now
 	}
+}, {
+	strict: true
 });
 
-module.export = NotificationSchema;
+module.exports = NotificationSchema;

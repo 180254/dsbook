@@ -20,7 +20,7 @@ describe('Notification', () => {
 			chai
 				.request(server)
 				.post('/notifications')
-				.send({"username": "daa", "body": "asd"})
+				.send({"user": "daa", "content": "asd"})
 				.end((err, res) => {
 					res
 						.should

@@ -1,27 +1,31 @@
+"use strict";
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const User = new Schema({
-	name: {
+const UserSchema = new Schema({
+	id: { // 304-1
 		type: String,
-		require: false
+		required: true
 	},
-	surname: {
+	name: { // Johny
 		type: String,
-		require: false
+		required: false
 	},
-	roomnumber: {
+	surname: { // English
 		type: String,
-		require: true
+		required: false
 	},
-	email: {
+	mobile: { // 500200100
 		type: String,
-		require: false
+		required: false,
 	},
-	notifications: {
+	email: { // johny.english@gmail.com
 		type: String,
-		require: false
+		required: false
 	}
+}, {
+	strict: true
 });
 
-module.export = User;
+module.exports = UserSchema;
