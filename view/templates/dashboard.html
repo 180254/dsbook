@@ -18,7 +18,7 @@
             <button type="button" class="btn btn-primary" ng-click="sendPredefinedNotification('porter')">Wezwanie do portiera</button>
             <button type="button" class="btn btn-primary" ng-click="showNotificationTextarea = true">Inne</button>
         </div><br><br>
-        <div ng-if="showNotificationTextarea">
+        <div ng-show="showNotificationTextarea">
             <div class="form-group">
                 <label for="messageContent">Inne zgłoszenie</label>
                 <textarea id="messageContent"
@@ -27,8 +27,7 @@
                           ng-model="notification.notificatonContent"
                           ng-click="sendNotification()"></textarea>
             </div>
-            {{notification.notificatonContent}}
-            <button class="btn btn-info pull-right">
+            <button class="btn btn-info pull-right" ng-disabled="!notification.notificatonContent">
                 <i class="fa fa-send" aria-hidden="true"></i>
                 <span>Wyślij zgłoszenie</span>
             </button>

@@ -7,10 +7,11 @@
 
     DashboardCtrl.$inject = [
         '$scope',
-        '$rootScope'
+        '$rootScope',
+        'Notification'
     ];
 
-    function DashboardCtrl($scope, $rootScope) {
+    function DashboardCtrl($scope, $rootScope, Notification) {
         var messages = [
             'Na portierni czeka pizza zamówiona przez osobę z tego pokoju',
             'Na portierni czeka paczka zamówiona przez osobę z tego pokoju',
@@ -30,23 +31,48 @@
         $scope.showNotificationTextarea = false;
 
         function sendNotification(){
-            console.log($scope.notification.notificatonContent)
-            $rootScope.notifications.push({message:$scope.notification.notificatonContent, room: $scope.selectedRoom, date: new Date(), accepted: false});
+            Notification.add({
+                user : 'mockedUser',
+                content : $scope.notification.notificatonContent
+            }).$promise.then(function(result) {
+                toaster.pop({
+                    type: 'success',
+                    title: 'Sukces',
+                    body: 'Powiadomienie zostało wysłane',
+                    showCloseButton: true
+                });
+            },
+            function(reason){
+                toaster.pop({
+                    type: 'error',
+                    title: 'Porażka',
+                    body: 'Nie udało się wysłać powiadomienia',
+                    showCloseButton: true
+                });
+            } );
         }
 
         function sendPredefinedNotification(key){
             $scope.showNotificationTextarea = false;
+
+            var content = '';
+
             if(key === 'pizza'){
-                $rootScope.notifications.push({message:messages[0], room: $scope.selectedRoom, date: new Date(), accepted: false});
+                content = messages[0];
             }else if(key === 'package'){
-                $rootScope.notifications.push({message:messages[1], room: $scope.selectedRoom, date: new Date(), accepted: false});
+                content = messages[1];
             }else if(key === 'manager'){
-                $rootScope.notifications.push({message:messages[2], room: $scope.selectedRoom, date: new Date(), accepted: false});
+                content = messages[2];
             }else if(key === 'porter' ){
-                $rootScope.notifications.push({message:messages[3], room: $scope.selectedRoom, date: new Date(), accepted: false});
+                content = messages[3];
             }else{
                 throw 'Usupported predefined value'
             }
+
+            Notification.add({
+                user : 'mockedUser',
+                content : content
+            });
         }
     }
 })();

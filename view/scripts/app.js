@@ -3,7 +3,9 @@
     var app = angular.module("PZApp", [
         'ngAnimate',
         'ui.bootstrap',
-        'ui.router'
+        'ui.router',
+        'ngResource',
+        'toaster'
     ]);
 })();
 

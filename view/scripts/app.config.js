@@ -12,13 +12,11 @@
 
     function configure( $stateProvider, $urlRouterProvider){
         $urlRouterProvider.otherwise('/dashboard');
-        console.log($stateProvider);
         $stateProvider.state('root', {
             'abstract': true,
             views: {
                 'navbar@': {
                     templateUrl: 'templates/navbar.html',
-                    //template: '<h3>aaaaaaa</f3>',
                     controller: 'NavbarCtrl'
                 },
                 'body@': {
@@ -26,7 +24,6 @@
                 },
                 'footer': {
                     templateUrl: 'templates/footer.html'
-                    //controller: 'FooterCtrl'
                 }
             }
         });
@@ -36,7 +33,6 @@
             templateUrl: 'templates/dashboard.html',
             controller: 'DashboardCtrl'
         });
-        console.log($stateProvider);
     }
 
 })();
