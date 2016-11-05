@@ -2,7 +2,6 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const serveStatic = require("serve-static");
 const cookieParser = require("cookie-parser");
 
@@ -10,7 +9,9 @@ const apiAuth = require("./api/auth.js");
 const apiNotification = require("./api/notification.js");
 const apiUser = require("./api/user.js");
 
+const mongoose = require("mongoose");
 const dbUri = "mongodb://localhost/dsbook";
+mongoose.Promise = global.Promise;
 mongoose.connect(dbUri, (err) => {
     if (err) {
         console.log("mongoose.connect: FAIL (!)");
