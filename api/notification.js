@@ -8,7 +8,7 @@ const Notification = mongoose.model("Notification", NotificationSchema);
 
 
 // GET /api/notification
-// parameters: req.query._id, req.query.room, req.query.user, req.query.status
+// parameters: req.query._id, req.query.recipient, req.query.status
 exports.getNotificationReq = function (req, res, next) {
     auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
 
@@ -23,31 +23,19 @@ exports.getNotificationReq = function (req, res, next) {
             return;
         }
 
-        // room filter is given => should be number-only
+        // recipient filter is given => requester must be portier or student must ask about yourself
         if (
-            reqParam.room
-            && !/^[0-9]+$/.test(reqParam.room)) {
-            res.status(400).send({});
-            return;
-        }
-
-        // user filter is not given => requester must be portier
-        if (
-            !reqParam.user
-            && !(accInfo.accType === auth.accountTypes.PORTIER)
+            reqParam.recipient
+            && !(accInfo.accType === auth.accountTypes.PORTIER || accInfo.user.startsWith(reqParam.user))
         ) {
             res.status(403).send({});
             return;
         }
 
-        // user filter is given => requester must be portier or student must ask about yourself
-        if (
-            reqParam.user
-            && !(accInfo.accType === auth.accountTypes.PORTIER || reqParam.user === accInfo.user)
-        ) {
-            res.status(403).send({});
-            return;
-        }
+        // recipient should be array; semicolon separated string
+        reqParam.recipient = reqParam.recipient
+            ? reqParam.recipient.split(",")
+            : undefined;
 
         // status should be array: semicolon separated string
         reqParam.status = reqParam.status
@@ -65,8 +53,7 @@ exports.getNotificationReq = function (req, res, next) {
 
         const mongoFilters = {};
         reqParam._id && (mongoFilters._id = reqParam._id);
-        reqParam.room && (mongoFilters.user = new RegExp(String.raw`^${reqParam.room}\-?\d*$`));
-        reqParam.user && (mongoFilters.user = reqParam.user);
+        reqParam.recipient && (mongoFilters.recipient = {"$in": reqParam.recipient});
         reqParam.status && (mongoFilters.status = {"$in": reqParam.status});
 
         Notification.find(
@@ -85,29 +72,30 @@ exports.getNotificationReq = function (req, res, next) {
 };
 
 // GET /api/notification/counter
-// parameters: req.query.room, req.query.user, req.query.status
+// parameters: req.query.recipient, req.query.status
 exports.getNotificationCounterReq = function (req, res, next) {
-    auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
+    const reqParam = req.query;
 
-        const reqParam = req.query;
+    // recipient param is given => api is public
+    let verifyFunc = reqParam.recipient
+        ? auth.verifyNoneAsync
+        : auth.verifyTokenAsync;
 
-        // room filter is given => should be number-only
+    verifyFunc(req, res, next, undefined).then((accInfo) => {
+        // recipient filter is not given => requester must be portier
         if (
-            reqParam.room
-            && !/^[0-9]+$/.test(reqParam.room)
-        ) {
-            res.status(400).send({});
-            return;
-        }
-
-        // user filter is not given => requester must be portier
-        if (
-            !reqParam.user
+            !reqParam.recipient
             && !(accInfo.accType === auth.accountTypes.PORTIER)
         ) {
             res.status(403).send({});
             return;
         }
+
+        // recipient should be array; semicolon separated string
+        reqParam.recipient = reqParam.recipient
+            ? reqParam.recipient.split(",")
+            : undefined;
+
         // status should be array: semicolon separated string
         reqParam.status = reqParam.status
             ? reqParam.status.split(",")
@@ -123,8 +111,7 @@ exports.getNotificationCounterReq = function (req, res, next) {
         }
 
         const mongoFilters = {};
-        reqParam.room && (mongoFilters.user = new RegExp(String.raw`^${reqParam.room}\-?\d*$`));
-        reqParam.user && (mongoFilters.user = reqParam.user);
+        reqParam.recipient && (mongoFilters.recipient = {"$in": reqParam.recipient});
         reqParam.status && (mongoFilters.status = {"$in": reqParam.status});
 
         Notification.count(
@@ -143,14 +130,14 @@ exports.getNotificationCounterReq = function (req, res, next) {
 };
 
 // POST /api/notification
-// parameters: req.body.user, req.body.content
+// parameters: req.body.recipient, req.body.content
 exports.postNotificationReq = function (req, res, next) {
     auth.verifyTokenAsync(req, res, next, auth.accountTypes.PORTIER).then((accInfo) => {
 
         const reqParam = req.body;
 
         const newNotification = new Notification({
-            user: reqParam.user,
+            recipient: reqParam.recipient,
             content: reqParam.content
         });
 

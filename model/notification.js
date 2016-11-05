@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const NotificationSchema = new Schema({
-    user: { // 304-1
+    recipient: { // 304, 304-1
         type: String,
         required: true
     },

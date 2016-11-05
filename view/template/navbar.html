@@ -1,14 +1,17 @@
 <div ng-controller="NavbarCtrl">
+
     <div class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
+
+                <ul class="nav navbar-nav" ng-if="user && user.accType == 'PORTIER'">
                     <li ui-sref-active="active">
                         <a ui-sref="dashboard">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
                             <span>Dodaj zgłoszenie</span>
                         </a>
                     </li>
+
                     <li ui-sref-active="active">
                         <a ui-sref="notification">
                             <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -16,18 +19,20 @@
                         </a>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
+
+                <ul class="nav navbar-nav navbar-right" ng-if="user">
                     <li>
-                        <p class="navbar-text">{{loggedUser}}</p>
+                        <p class="navbar-text">{{user.user}}</p>
                     </li>
                     <li>
                         <p class="navbar-text">
-                            <i class="fa fa-sign-out aria-hidden="true"></i>
-                            <span>Wyloguj</span>
+                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            <a href="#" ng-click="$event.preventDefault();logout()">Wyloguj</a>
                         </p>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
+
 </div>

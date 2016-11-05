@@ -28,12 +28,10 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(serveStatic("view", {"index": ["index.html"]}));
 
+apiAuth.DEBUG.set(true);
 router.post("/api/auth/login", apiAuth.authLoginReq);
-router.post("/api/auth/current", apiAuth.authCurrentReq);
+router.get("/api/auth/current", apiAuth.authCurrentReq);
 router.post("/api/auth/verify", apiAuth.authVerifyReq);
-router.get("/api/auth/test/any", apiAuth.authTestAnyReq);
-router.get("/api/auth/test/portier", apiAuth.authTestPortierReq);
-router.get("/api/auth/test/student", apiAuth.authTestStudentReq);
 
 router.post("/api/notification", apiNotification.postNotificationReq);
 router.get("/api/notification", apiNotification.getNotificationReq);
@@ -43,9 +41,9 @@ router.post("/api/notification/status", apiNotification.postNotificationStatusRe
 router.get("/api/user", apiUser.getUserReq);
 router.post("/api/user/update", apiUser.postUserUpdateReq);
 
-const port = process.argv[2] || 3000;
-
 app.use("/", router);
+
+const port = process.argv[2] || 3000;
 app.listen(port, function () {
     console.log("Live at Port " + port);
 });

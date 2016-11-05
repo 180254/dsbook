@@ -57,13 +57,13 @@ POST /api/auth/verify
 
 POST /api/notification
 {
-    "user": "201-1",
+    "recipient": "201-1",
     "content": "haha, pizza"
 }
 {
   "__v": 0,
   "_id": "5808e6671306231b3c9c2a35",
-  "user": "201-1",
+  "recipient": "201-1",
   "content": "haha",
   "date": "2016-10-20T15:44:39.695Z",
   "status": "new"
@@ -77,7 +77,7 @@ GET /api/notification
   {
     "__v": 0,
     "_id": "5808e6671306231b3c9c2a35",
-    "user": "201-1",
+    "recipient": "201-1",
     "content": "haha, pizza",
     "date": "2016-10-20T15:43:57.065Z",
     "status": "new"
@@ -87,14 +87,13 @@ GET /api/notification
 ######################
 
 GET /api/notification
-        ?room=401
-        &student=401-1
+        ?recipient=401,401-1
         &status=new,confirmed,closed
 [
   {
     "__v": 0,
     "_id": "5808e63d1306231b3c9c2a34",
-    "user": "201-1",
+    "recipient": "201-1",
     "content": "haha, pizza",
     "date": "2016-10-20T15:43:57.065Z",
     "status": "new"
@@ -102,7 +101,7 @@ GET /api/notification
   {
     "__v": 0,
     "_id": "5808e6671306231b3c9c2a35",
-    "user": "201-2",
+    "recipient": "201-2",
     "content": "haha, other pizza",
     "date": "2016-10-20T15:44:39.695Z",
     "status": "new"
@@ -112,8 +111,7 @@ GET /api/notification
 ######################
 
 GET /api/notification/counter
-        ?room=401
-        &student=401-1
+        ?recipient=401,401-1
         &status=new,confirmed,closed
 {
   "counter": 7

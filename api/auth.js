@@ -7,11 +7,9 @@ const tokensMap = new NodeCache({
     checkperiod: 86400 /* check every one day */
 });
 
-// TODO remove as TEST TEST TEST
-tokensMap.set("token-portier", "portier");
-tokensMap.set("token-student-1", "201-1");
-tokensMap.set("token-student-2", "302-2");
-// TEST TEST TEST
+// ###################################################################################################################
+
+let DEBUG = false;
 
 // ###################################################################################################################
 
@@ -55,11 +53,22 @@ const userRoute = require("./user.js");
 function authAsync(username, password) {
     return new Promise((resolve, reject) => {
 
-        if (username && password) {
-            // TODO: implement real auth logic
-            resolve();
+        if (DEBUG) {
+            let loggedIn = false;
+
+            if (username.match(/[0-9]{3}-[0-9]/)) {
+                loggedIn = password == "student";
+
+            }
+            else if (username == "portier") {
+                loggedIn = password == "portier";
+            }
+
+            const callback = loggedIn ? resolve : reject;
+            setTimeout(callback, 500);
         } else {
             reject();
+            // TODO: implement real auth logic
         }
     });
 }
@@ -116,7 +125,7 @@ function checkTokenAsync(token) {
 }
 
 /**
- * Pre-authenticate request.
+ * Pre-authenticate function for non-public request.
  * Check if user is logged in and (optionally) has specific account type.
  *
  * @param {Object} req
@@ -143,6 +152,29 @@ function verifyTokenAsync(req, res, next, accType) {
             throw err;
         });
 }
+
+/**
+ * Pre-authenticate function for public request.
+ * Will pass even if user is not logged in, but accInfo will be null.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Object} next
+ * @return {Promise<AccountInfo|null, undefined>}
+ */
+function verifyNoneAsync(req, res, next) {
+    const token = req.cookies.token || req.query.token;
+
+    return checkTokenAsync(token)
+        .then((accInfo) => {
+            return accInfo;
+
+        })
+        .catch((err) => {
+            return null;
+        });
+}
+
 
 // ###################################################################################################################
 
@@ -174,10 +206,20 @@ function _accountType(username) {
 
 // ###################################################################################################################
 
+exports.DEBUG = {
+    get: function () {
+        return DEBUG;
+    },
+    set: function (flag) {
+        DEBUG = flag;
+    }
+};
+
 exports.accountTypes = accountTypes;
 exports.authTokenAsync = authTokenAsync;
 exports.checkTokenAsync = checkTokenAsync;
 exports.verifyTokenAsync = verifyTokenAsync;
+exports.verifyNoneAsync = verifyNoneAsync;
 
 // POST /api/auth/login
 exports.authLoginReq = function (req, res, next) {
@@ -196,6 +238,9 @@ exports.authCurrentReq = function (req, res, next) {
     verifyTokenAsync(req, res, next, undefined)
         .then((accInfo) => {
             res.send(accInfo);
+        })
+        .catch(() => {
+            res.status(400).send({});
         });
 };
 
@@ -208,28 +253,4 @@ exports.authVerifyReq = function (req, res, next) {
         .catch(() => {
             res.status(400).send({});
         });
-};
-
-// GET /api/auth/test/any
-exports.authTestAnyReq = function (req, res, next) {
-    verifyTokenAsync(req, res, next, undefined)
-        .then((accInfo) => {
-            res.send(accInfo);
-        });
-};
-
-// GET /api/auth/test/portier
-exports.authTestPortierReq = function (req, res, next) {
-    verifyTokenAsync(req, res, next, accountTypes.PORTIER)
-        .then((accInfo) => {
-            res.send(accInfo);
-        })
-};
-
-// GET /api/auth/test/student
-exports.authTestStudentReq = function (req, res, next) {
-    verifyTokenAsync(req, res, next, accountTypes.STUDENT)
-        .then((accInfo) => {
-            res.send(accInfo);
-        })
 };

@@ -1,7 +1,11 @@
 <div class="panel-group">
+    <toaster-container></toaster-container>
+
     <div ng-repeat="item in data">
         <div class="panel col-md-6"
-             ng-class="{'panel-danger': !item.accepted, 'panel-success': item.accepted}">
+             ng-class="{'panel-danger': item.status == 'new', 'panel-success': item.status == 'confirmed'}"
+             ng-if="item.status != 'closedó'">
+
             <div class="panel-heading">
                 <span>{{item.message}}</span>
                 <i class=" pull-right fa fa-times" aria-hidden="true" title="Usuń"></i>
@@ -12,15 +16,19 @@
                     <span>{{item.date}}</span>
                 </div>
                 <div>
-                    <strong>Pokój: </strong>
-                    <span>{{item.room}}</span>
+                    <strong>Odbiorca: </strong>
+                    <span>{{item.recipient}}</span>
+                </div>
+                <div>
+                    <strong>Treść: </strong>
+                    <span>{{item.content}}</span>
                 </div>
                 <div>
                     <strong>Status:</strong>
                     <span class="text-danger"
-                          ng-if="!item.accepted">Niepotwierdzona</span>
+                          ng-if="item.status == 'new'">Niepotwierdzona</span>
                     <span class="text-success"
-                          ng-if="item.accepted">Potwierdzona</span>
+                          ng-if="item.status == 'confirmed'">Potwierdzona</span>
                 </div>
             </div>
         </div>

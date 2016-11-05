@@ -1,36 +1,55 @@
 <div ng-controller="DashboardCtrl">
-    Witaj <strong>{{loggedUser}},</strong><br>
-    Poniższy panel służy do wysyłania wiadomosći grupowych do mieszkańców akademików Politechniki Lódzkiej<br>
-    W celu wysłania wiadomosći <strong>wybierz numer pokoju,</strong> następnie <strong>wprowadź treść wiadomosći</strong> i kliknij przycisk <strong>"Wyślij informację"</strong><br><br>
+    <toaster-container></toaster-container>
+
+    <form id="notification-add-form" name="notAddForm">
+        <p>
+            Witaj,<br>
+            Poniższy panel służy do wysyłania wiadomosći grupowych do mieszkańców akademików Politechniki Lódzkiej<br>
+            W celu wysłania wiadomosći <strong>wybierz numer pokoju,</strong>następnie <strong>wprowadź treść
+            wiadomosći</strong> i kliknij przycisk <strong>"Wyślij informację"</strong>
+        </p>
+
         <div class="form-group">
             <label for="selectedRecipient">Informacja dla pokoju numer</label>
             <input class="form-control"
                    id="selectedRecipient"
                    type="text" placeholder="Wprowadź numer pokoju"
-                   uib-typeahead="room.name for room in rooms"
-                   typeahead-editable="false"
-                   ng-model="selectedRoom">
+                   uib-typeahead="item for item in predefRecipients"
+                   ng-model="recipient"
+                   required="required">
         </div>
+
         <div class="btn-group btn-group-lg">
-            <button type="button" class="btn btn-primary" ng-click="sendPredefinedNotification('pizza')">Pizza</button>
-            <button type="button" class="btn btn-primary" ng-click="sendPredefinedNotification('package')">Paczka</button>
-            <button type="button" class="btn btn-primary" ng-click="sendPredefinedNotification('manager')">Wezwanie do kierownika</button>
-            <button type="button" class="btn btn-primary" ng-click="sendPredefinedNotification('porter')">Wezwanie do portiera</button>
-            <button type="button" class="btn btn-primary" ng-click="showNotificationTextarea = true">Inne</button>
-        </div><br><br>
-        <div ng-show="showNotificationTextarea">
+            <button ng-repeat="(key, value) in predefButtons"
+                    type="submit" class="btn btn-primary"
+                    ng-click="sendPredefinedNotification(key)"
+                    ng-disabled="notAddForm.$invalid">
+                {{value.button}}
+            </button>
+
+            <button type="button" class="btn btn-primary" ng-click="otherButton()">
+                Inne
+            </button>
+        </div>
+
+        <br><br>
+
+        <div ng-show="showCustomNotification">
             <div class="form-group">
                 <label for="messageContent">Inne zgłoszenie</label>
                 <textarea id="messageContent"
                           class="form-control"
                           placeholder="Wpisz treść zgłoszenia"
-                          ng-model="notification.notificatonContent"
-                          ng-click="sendNotification()"></textarea>
+                          ng-model="content"></textarea>
             </div>
-            <button class="btn btn-info pull-right" ng-disabled="!notification.notificatonContent">
+
+            <button type="submit" class="btn btn-info pull-right"
+                    ng-click="sendNotification()"
+                    ng-disabled="notAddForm.$invalid">
                 <i class="fa fa-send" aria-hidden="true"></i>
                 <span>Wyślij zgłoszenie</span>
             </button>
-            </div>
-<hr>
+        </div>
+
+    </form>
 </div>

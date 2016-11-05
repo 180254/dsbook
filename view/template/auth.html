@@ -1,0 +1,35 @@
+<div class="container-auth">
+    <div class="card card-container">
+        <h2 class="login-title text-center">Logowanie</h2>
+
+        <hr>
+
+        <form class="form-sign-in">
+            <span id="welcome-msg" class="welcome-msg" ng-if="!!notInfo">
+                Witaj {{notInfo.user}}!.<br/>Masz {{notInfo.counter}} oczekujących powiadomień.
+            </span>
+
+            <p class="input-title">Użytkownik</p>
+
+            <input type="text" id="input-login" class="login-box"
+                   placeholder="101-2" required="required" autofocus="autofocus"
+                   ng-model="loginBox">
+
+            <p class="input-title">Hasło</p>
+
+            <input type="password" id="input-password" class="login-box"
+                   placeholder="******" required="required"
+                   ng-model="passwordBox">
+
+            <button class="btn btn-lg btn-primary" type="submit"
+                    ng-click="obSubmitClick()">
+                Zaloguj
+            </button>
+
+            <div id="status-msg" class="status-msg"
+                 ng-bind="statusMsg">
+            </div>
+
+        </form>
+    </div>
+</div>
