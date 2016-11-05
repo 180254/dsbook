@@ -17,7 +17,7 @@
 
 ######################
 
-POST /auth/login
+POST /api/auth/login
 {
   "username": "201-1",
   "password": "zdzichu"
@@ -31,7 +31,7 @@ POST /auth/login
 
 ######################
 
-GET /auth/current
+GET /api/auth/current
 {
   "token": "0.izc52j5t4h794xxm1gr13v7vi",
   "tokenExpire": 1477583500160,
@@ -42,7 +42,7 @@ GET /auth/current
 
 ######################
 
-POST /auth/verify
+POST /api/auth/verify
 {
     "token": "0.izc52j5t4h794xxm1gr13v7vi"
 }
@@ -55,7 +55,7 @@ POST /auth/verify
 
 ######################
 
-POST /notification
+POST /api/notification
 {
     "user": "201-1",
     "content": "haha, pizza"
@@ -71,7 +71,7 @@ POST /notification
 
 ######################
 
-GET /notification
+GET /api/notification
     ?_id=5808e6671306231b3c9c2a35
 [
   {
@@ -86,7 +86,7 @@ GET /notification
 
 ######################
 
-GET /notification
+GET /api/notification
         ?room=401
         &student=401-1
         &status=new,confirmed,closed
@@ -111,7 +111,7 @@ GET /notification
 
 ######################
 
-GET /notification/counter
+GET /api/notification/counter
         ?room=401
         &student=401-1
         &status=new,confirmed,closed
@@ -121,7 +121,7 @@ GET /notification/counter
 
 ######################
 
-POST /notification/status
+POST /api/notification/status
 {
   "_id": "5808e63d1306231b3c9c2a34",
   "status": "confirmed"
@@ -137,7 +137,7 @@ POST /notification/status
 
 ######################
 
-GET /user
+GET /api/user
     ?user=201-1
 [
   {
@@ -153,7 +153,7 @@ GET /user
 
 ######################
 
-POST /user/update
+POST /api/user/update
 {
   "user": "201-1",
   "name": "JohnyX",

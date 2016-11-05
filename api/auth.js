@@ -179,7 +179,7 @@ exports.authTokenAsync = authTokenAsync;
 exports.checkTokenAsync = checkTokenAsync;
 exports.verifyTokenAsync = verifyTokenAsync;
 
-// POST /auth/login
+// POST /api/auth/login
 exports.authLoginReq = function (req, res, next) {
 	authTokenAsync(req.body.username, req.body.password)
 		.then((accInfo) => {
@@ -191,7 +191,7 @@ exports.authLoginReq = function (req, res, next) {
 };
 
 
-// GET /auth/current
+// GET /api/auth/current
 exports.authCurrentReq = function (req, res, next) {
 	verifyTokenAsync(req, res, next, undefined)
 		.then((accInfo) => {
@@ -199,7 +199,7 @@ exports.authCurrentReq = function (req, res, next) {
 		});
 };
 
-// POST /auth/verify
+// POST /api/auth/verify
 exports.authVerifyReq = function (req, res, next) {
 	checkTokenAsync(req.body.token)
 		.then((accInfo) => {
@@ -210,7 +210,7 @@ exports.authVerifyReq = function (req, res, next) {
 		});
 };
 
-// GET /auth/test/any
+// GET /api/auth/test/any
 exports.authTestAnyReq = function (req, res, next) {
 	verifyTokenAsync(req, res, next, undefined)
 		.then((accInfo) => {
@@ -218,7 +218,7 @@ exports.authTestAnyReq = function (req, res, next) {
 		});
 };
 
-// GET /auth/test/portier
+// GET /api/auth/test/portier
 exports.authTestPortierReq = function (req, res, next) {
 	verifyTokenAsync(req, res, next, accountTypes.PORTIER)
 		.then((accInfo) => {
@@ -226,7 +226,7 @@ exports.authTestPortierReq = function (req, res, next) {
 		})
 };
 
-// GET /auth/test/student
+// GET /api/auth/test/student
 exports.authTestStudentReq = function (req, res, next) {
 	verifyTokenAsync(req, res, next, accountTypes.STUDENT)
 		.then((accInfo) => {

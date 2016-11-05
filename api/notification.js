@@ -7,9 +7,9 @@ const NotificationSchema = require("./../model/notification.js");
 const Notification = mongoose.model("Notification", NotificationSchema);
 
 
-// GET /notification
+// GET /api/notification
 // parameters: req.query._id, req.query.room, req.query.user, req.query.status
-exports.getNotification = function (req, res, next) {
+exports.getNotificationReq = function (req, res, next) {
 	auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
 
 		const reqParam = req.query;
@@ -84,9 +84,9 @@ exports.getNotification = function (req, res, next) {
 	})
 };
 
-// GET /notification/counter
+// GET /api/notification/counter
 // parameters: req.query.room, req.query.user, req.query.status
-exports.getNotificationCounter = function (req, res, next) {
+exports.getNotificationCounterReq = function (req, res, next) {
 	auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
 
 		const reqParam = req.query;
@@ -142,9 +142,9 @@ exports.getNotificationCounter = function (req, res, next) {
 	})
 };
 
-// POST /notification
+// POST /api/notification
 // parameters: req.body.user, req.body.content
-exports.postNotification = function (req, res, next) {
+exports.postNotificationReq = function (req, res, next) {
 	auth.verifyTokenAsync(req, res, next, auth.accountTypes.PORTIER).then((accInfo) => {
 
 		const reqParam = req.body;
@@ -173,9 +173,9 @@ exports.postNotification = function (req, res, next) {
 	});
 };
 
-// POST /notification/status
+// POST /api/notification/status
 // parameters: req.body._id, req.body.status
-exports.postNotificationStatus = function (req, res, next) {
+exports.postNotificationStatusReq = function (req, res, next) {
 	auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
 
 		const reqParam = req.body;

@@ -6,9 +6,9 @@ const mongoose = require("mongoose");
 const serveStatic = require("serve-static");
 const cookieParser = require("cookie-parser");
 
-const authRoute = require("./route/auth.js");
-const notificationRoute = require("./route/notification.js");
-const userRoute = require("./route/user.js");
+const apiAuth = require("./api/auth.js");
+const apiNotification = require("./api/notification.js");
+const apiUser = require("./api/user.js");
 
 const dbUri = "mongodb://localhost/dsbook";
 mongoose.connect(dbUri, (err) => {
@@ -28,20 +28,20 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(serveStatic("view", {"index": ["index.html"]}));
 
-router.post("/auth/login", authRoute.authLoginReq);
-router.post("/auth/current", authRoute.authCurrentReq);
-router.post("/auth/verify", authRoute.authVerifyReq);
-router.get("/auth/test/any", authRoute.authTestAnyReq);
-router.get("/auth/test/portier", authRoute.authTestPortierReq);
-router.get("/auth/test/student", authRoute.authTestStudentReq);
+router.post("/api/auth/login", apiAuth.authLoginReq);
+router.post("/api/auth/current", apiAuth.authCurrentReq);
+router.post("/api/auth/verify", apiAuth.authVerifyReq);
+router.get("/api/auth/test/any", apiAuth.authTestAnyReq);
+router.get("/api/auth/test/portier", apiAuth.authTestPortierReq);
+router.get("/api/auth/test/student", apiAuth.authTestStudentReq);
 
-router.post("/notification", notificationRoute.postNotification);
-router.get("/notification", notificationRoute.getNotification);
-router.get("/notification/counter", notificationRoute.getNotificationCounter);
-router.post("/notification/status", notificationRoute.postNotificationStatus);
+router.post("/api/notification", apiNotification.postNotificationReq);
+router.get("/api/notification", apiNotification.getNotificationReq);
+router.get("/api/notification/counter", apiNotification.getNotificationCounterReq);
+router.post("/api/notification/status", apiNotification.postNotificationStatusReq);
 
-router.get("/user", userRoute.getUser);
-router.post("/user/update", userRoute.postUserUpdate);
+router.get("/api/user", apiUser.getUserReq);
+router.post("/api/user/update", apiUser.postUserUpdateReq);
 
 const port = process.argv[2] || 3000;
 

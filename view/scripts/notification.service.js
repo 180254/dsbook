@@ -8,7 +8,7 @@
     Notification.$inject = ['$resource'];
 
     function Notification($resource){
-        return $resource('/notification', {}, {
+        return $resource('/api/notification', {}, {
             query: {
                 method: 'GET',
                 isArray: true

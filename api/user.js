@@ -13,9 +13,9 @@ exports.findOrCreate = function (user) {
 	User.findOrCreate({user: user}, () => undefined);
 };
 
-// GET /user
+// GET /api/user
 // parameters: req.body.user
-exports.getUser = function (req, res, next) {
+exports.getUserReq = function (req, res, next) {
 	auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
 
 		const reqParam = req.query;
@@ -56,9 +56,9 @@ exports.getUser = function (req, res, next) {
 	});
 };
 
-// POST /user/update
+// POST /api/user/update
 // parameters: req.body.user, req.body.name, req.body.surname, req.body.mobile, req.body.email
-exports.postUserUpdate = function (req, res, next) {
+exports.postUserUpdateReq = function (req, res, next) {
 	auth.verifyTokenAsync(req, res, next, auth.accountTypes.STUDENT).then((accInfo) => {
 
 		const reqParam = req.body;
