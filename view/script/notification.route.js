@@ -15,7 +15,7 @@
             .state('notification', {
                 parent: 'root',
                 url: '/notification',
-                templateUrl: 'templates/notification.html',
+                templateUrl: 'template/notification.html',
                 controller: "NotificationCtrl",
                 resolve :{
                     notifications : resolveNotifications

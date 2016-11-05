@@ -16,21 +16,21 @@
             'abstract': true,
             views: {
                 'navbar@': {
-                    templateUrl: 'templates/navbar.html',
+                    templateUrl: 'template/navbar.html',
                     controller: 'NavbarCtrl'
                 },
                 'body@': {
                     template: '<ui-view />'
                 },
                 'footer': {
-                    templateUrl: 'templates/footer.html'
+                    templateUrl: 'template/footer.html'
                 }
             }
         });
         $stateProvider.state('dashboard', {
             parent : 'root',
             url: '/dashboard',
-            templateUrl: 'templates/dashboard.html',
+            templateUrl: 'template/dashboard.html',
             controller: 'DashboardCtrl'
         });
     }
