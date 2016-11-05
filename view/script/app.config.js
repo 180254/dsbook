@@ -1,4 +1,4 @@
-(function (){
+(function () {
     'use strict';
 
     angular
@@ -10,7 +10,7 @@
         '$urlRouterProvider'
     ];
 
-    function configure( $stateProvider, $urlRouterProvider){
+    function configure($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/dashboard');
         $stateProvider.state('root', {
             'abstract': true,
@@ -28,7 +28,7 @@
             }
         });
         $stateProvider.state('dashboard', {
-            parent : 'root',
+            parent: 'root',
             url: '/dashboard',
             templateUrl: 'template/dashboard.html',
             controller: 'DashboardCtrl'

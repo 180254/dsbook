@@ -1,4 +1,4 @@
-(function (){
+(function () {
     'use strict';
     var app = angular.module("PZApp", [
         'ngAnimate',
@@ -9,7 +9,7 @@
     ]);
 })();
 
-(function (){
+(function () {
     'use strict';
 
     angular
@@ -20,10 +20,10 @@
         '$rootScope',
         '$state',
         '$window'
-        ];
+    ];
 
-    function runBlock($root, $state, $window){
-       $root.$on('$stateChangeStart', function (evt, to, params){
+    function runBlock($root, $state, $window) {
+        $root.$on('$stateChangeStart', function (evt, to, params) {
             if (to.redirectTo) {
                 evt.preventDefault();
                 $state.go(to.redirectTo, params);

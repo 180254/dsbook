@@ -1,4 +1,4 @@
-(function (){
+(function () {
     'use strict';
 
     angular
@@ -7,7 +7,7 @@
 
     notificationProvider.$inject = ['$stateProvider'];
 
-    function notificationProvider($stateProvider){
+    function notificationProvider($stateProvider) {
 
         var resolveNotifications = ['$state', 'Notification', 'toaster', loadNotifications];
 
@@ -17,15 +17,15 @@
                 url: '/notification',
                 templateUrl: 'template/notification.html',
                 controller: "NotificationCtrl",
-                resolve :{
-                    notifications : resolveNotifications
+                resolve: {
+                    notifications: resolveNotifications
                 }
             });
 
 
-        function loadNotifications($state, Notification, toaster){
+        function loadNotifications($state, Notification, toaster) {
             var notificationPromise = Notification.query().$promise;
-            notificationPromise['catch'](function (reason){
+            notificationPromise['catch'](function (reason) {
                 console.log('Get Notifications error becouse of ', reason);
                 toaster.pop({
                     type: 'error',

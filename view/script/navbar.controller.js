@@ -7,7 +7,7 @@
 
     NavbarCtrl.$inject = [
         '$scope'
-        ];
+    ];
 
     function NavbarCtrl($scope) {
         $scope.loggedUser = "Portier";

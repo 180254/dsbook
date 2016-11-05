@@ -3,8 +3,8 @@
 const NodeCache = require("node-cache");
 
 const tokensMap = new NodeCache({
-	stdTTL: 604800 /* expire tokens after one week */,
-	checkperiod: 86400 /* check every one day */
+    stdTTL: 604800 /* expire tokens after one week */,
+    checkperiod: 86400 /* check every one day */
 });
 
 // TODO remove as TEST TEST TEST
@@ -19,16 +19,16 @@ tokensMap.set("token-student-2", "302-2");
  * @enum {string}
  */
 const accountTypes = {
-	PORTIER: "PORTIER",
-	STUDENT: "STUDENT"
+    PORTIER: "PORTIER",
+    STUDENT: "STUDENT"
 };
 
 const predefAccount = [
-	{
-		username: "portier",
-		password: "portier",
-		accType: accountTypes.PORTIER
-	}
+    {
+        username: "portier",
+        password: "portier",
+        accType: accountTypes.PORTIER
+    }
 ];
 
 // ###################################################################################################################
@@ -53,15 +53,15 @@ const userRoute = require("./user.js");
  * @return {Promise<undefined,undefined>}
  */
 function authAsync(username, password) {
-	return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
-		if (username && password) {
-			// TODO: implement real auth logic
-			resolve();
-		} else {
-			reject();
-		}
-	});
+        if (username && password) {
+            // TODO: implement real auth logic
+            resolve();
+        } else {
+            reject();
+        }
+    });
 }
 
 /**
@@ -73,20 +73,20 @@ function authAsync(username, password) {
  * @return {Promise<AccountInfo, undefined>}
  */
 function authTokenAsync(username, password) {
-	return authAsync(username, password)
-		.then(() => {
+    return authAsync(username, password)
+        .then(() => {
 
-			const nextToken = _nextRandomToken();
-			tokensMap.set(nextToken, username);
-			userRoute.findOrCreate(username);
+            const nextToken = _nextRandomToken();
+            tokensMap.set(nextToken, username);
+            userRoute.findOrCreate(username);
 
-			return {
-				token: nextToken,
-				tokenExpire: tokensMap.getTtl(nextToken),
-				user: username,
-				accType: _accountType(username)
-			};
-		});
+            return {
+                token: nextToken,
+                tokenExpire: tokensMap.getTtl(nextToken),
+                user: username,
+                accType: _accountType(username)
+            };
+        });
 }
 
 /**
@@ -96,23 +96,23 @@ function authTokenAsync(username, password) {
  * @return {Promise<AccountInfo, undefined>}
  */
 function checkTokenAsync(token) {
-	return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
-		tokensMap.get(token || "", (err, value) => {
-			if (!err && value !== undefined) {
-				const username = value;
-				resolve({
-					token: token,
-					tokenExpire: tokensMap.getTtl(token),
-					user: username,
-					accType: _accountType(username)
-				});
+        tokensMap.get(token || "", (err, value) => {
+            if (!err && value !== undefined) {
+                const username = value;
+                resolve({
+                    token: token,
+                    tokenExpire: tokensMap.getTtl(token),
+                    user: username,
+                    accType: _accountType(username)
+                });
 
-			} else {
-				reject();
-			}
-		});
-	});
+            } else {
+                reject();
+            }
+        });
+    });
 }
 
 /**
@@ -126,22 +126,22 @@ function checkTokenAsync(token) {
  * @return {Promise<AccountInfo, undefined>}
  */
 function verifyTokenAsync(req, res, next, accType) {
-	const token = req.cookies.token || req.query.token;
+    const token = req.cookies.token || req.query.token;
 
-	return checkTokenAsync(token)
-		.then((accInfo) => {
-			if (accType && accInfo.accType !== accType) {
-				res.status(403/*Forbidden*/).send({});
-				throw undefined;
-			}
+    return checkTokenAsync(token)
+        .then((accInfo) => {
+            if (accType && accInfo.accType !== accType) {
+                res.status(403/*Forbidden*/).send({});
+                throw undefined;
+            }
 
-			return accInfo;
+            return accInfo;
 
-		})
-		.catch((err) => {
-			res.status(401/*Unauthorized*/).send({});
-			throw err;
-		});
+        })
+        .catch((err) => {
+            res.status(401/*Unauthorized*/).send({});
+            throw err;
+        });
 }
 
 // ###################################################################################################################
@@ -151,11 +151,11 @@ function verifyTokenAsync(req, res, next, accType) {
  * @return {string} randomized token
  */
 function _nextRandomToken() {
-	let token;
-	do {
-		token = Math.random().toString(36);
-	} while (tokensMap.get(token));
-	return token;
+    let token;
+    do {
+        token = Math.random().toString(36);
+    } while (tokensMap.get(token));
+    return token;
 }
 
 /**
@@ -165,11 +165,11 @@ function _nextRandomToken() {
  * @return {string} account type
  */
 function _accountType(username) {
-	const filtered = predefAccount.filter(a => a.username === username);
+    const filtered = predefAccount.filter(a => a.username === username);
 
-	return filtered.length > 0
-		? filtered[0].accType
-		: accountTypes.STUDENT;
+    return filtered.length > 0
+        ? filtered[0].accType
+        : accountTypes.STUDENT;
 }
 
 // ###################################################################################################################
@@ -181,55 +181,55 @@ exports.verifyTokenAsync = verifyTokenAsync;
 
 // POST /api/auth/login
 exports.authLoginReq = function (req, res, next) {
-	authTokenAsync(req.body.username, req.body.password)
-		.then((accInfo) => {
-			res.status(200).send(accInfo);
-		})
-		.catch(() => {
-			res.status(400).send({});
-		});
+    authTokenAsync(req.body.username, req.body.password)
+        .then((accInfo) => {
+            res.status(200).send(accInfo);
+        })
+        .catch(() => {
+            res.status(400).send({});
+        });
 };
 
 
 // GET /api/auth/current
 exports.authCurrentReq = function (req, res, next) {
-	verifyTokenAsync(req, res, next, undefined)
-		.then((accInfo) => {
-			res.send(accInfo);
-		});
+    verifyTokenAsync(req, res, next, undefined)
+        .then((accInfo) => {
+            res.send(accInfo);
+        });
 };
 
 // POST /api/auth/verify
 exports.authVerifyReq = function (req, res, next) {
-	checkTokenAsync(req.body.token)
-		.then((accInfo) => {
-			res.status(200).send(accInfo);
-		})
-		.catch(() => {
-			res.status(400).send({});
-		});
+    checkTokenAsync(req.body.token)
+        .then((accInfo) => {
+            res.status(200).send(accInfo);
+        })
+        .catch(() => {
+            res.status(400).send({});
+        });
 };
 
 // GET /api/auth/test/any
 exports.authTestAnyReq = function (req, res, next) {
-	verifyTokenAsync(req, res, next, undefined)
-		.then((accInfo) => {
-			res.send(accInfo);
-		});
+    verifyTokenAsync(req, res, next, undefined)
+        .then((accInfo) => {
+            res.send(accInfo);
+        });
 };
 
 // GET /api/auth/test/portier
 exports.authTestPortierReq = function (req, res, next) {
-	verifyTokenAsync(req, res, next, accountTypes.PORTIER)
-		.then((accInfo) => {
-			res.send(accInfo);
-		})
+    verifyTokenAsync(req, res, next, accountTypes.PORTIER)
+        .then((accInfo) => {
+            res.send(accInfo);
+        })
 };
 
 // GET /api/auth/test/student
 exports.authTestStudentReq = function (req, res, next) {
-	verifyTokenAsync(req, res, next, accountTypes.STUDENT)
-		.then((accInfo) => {
-			res.send(accInfo);
-		})
+    verifyTokenAsync(req, res, next, accountTypes.STUDENT)
+        .then((accInfo) => {
+            res.send(accInfo);
+        })
 };

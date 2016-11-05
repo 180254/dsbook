@@ -1,4 +1,4 @@
-(function (){
+(function () {
     'use strict';
 
     angular
@@ -7,7 +7,7 @@
 
     Notification.$inject = ['$resource'];
 
-    function Notification($resource){
+    function Notification($resource) {
         return $resource('/api/notification', {}, {
             query: {
                 method: 'GET',
