@@ -39,6 +39,9 @@
                         user: user,
                         counter: data.counter
                     }
+                })
+                .catch((err) => {
+                    console.log("AssertionError(" + err + ")");
                 });
         };
 

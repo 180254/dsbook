@@ -48,7 +48,7 @@ const userRoute = require("./user.js");
  *
  * @param {string|undefined|null} username
  * @param {string|undefined|null} password
- * @return {Promise<undefined,undefined>}
+ * @return {Promise<string,string>}
  */
 function authAsync(username, password) {
     return new Promise((resolve, reject) => {
@@ -65,7 +65,7 @@ function authAsync(username, password) {
             }
 
             const callback = loggedIn ? resolve : reject;
-            setTimeout(callback, 500);
+            setTimeout(() => callback("authAsync=" + loggedIn), 500);
         } else {
             reject();
             // TODO: implement real auth logic
@@ -79,7 +79,7 @@ function authAsync(username, password) {
  *
  * @param {string|undefined|null} username
  * @param {string|undefined|null} password
- * @return {Promise<AccountInfo, undefined>}
+ * @return {Promise<AccountInfo, string>}
  */
 function authTokenAsync(username, password) {
     return authAsync(username, password)
@@ -98,11 +98,12 @@ function authTokenAsync(username, password) {
         });
 }
 
+// ###################################################################################################################
 /**
  * Check if session token is proper and retrieve account info.
  *
  * @param {string|undefined|null} token
- * @return {Promise<AccountInfo, undefined>}
+ * @return {Promise<AccountInfo, string>}
  */
 function checkTokenAsync(token) {
     return new Promise((resolve, reject) => {
@@ -118,10 +119,23 @@ function checkTokenAsync(token) {
                 });
 
             } else {
-                reject();
+                reject("bad session token");
             }
         });
     });
+}
+
+// ###################################################################################################################
+
+
+/**
+ * Get token given in request.
+ *
+ * @param req
+ * @return {string|undefined}
+ */
+function getReqToken(req) {
+    return req.cookies.token || req.query.token
 }
 
 /**
@@ -132,10 +146,10 @@ function checkTokenAsync(token) {
  * @param {Object} res
  * @param {Object} next
  * @param {string|undefined|null} accType
- * @return {Promise<AccountInfo, undefined>}
+ * @return {Promise<AccountInfo, string>}
  */
-function verifyTokenAsync(req, res, next, accType) {
-    const token = req.cookies.token || req.query.token;
+function verifyReqTokenAsync(req, res, next, accType) {
+    const token = getReqToken(req);
 
     return checkTokenAsync(token)
         .then((accInfo) => {
@@ -162,8 +176,8 @@ function verifyTokenAsync(req, res, next, accType) {
  * @param {Object} next
  * @return {Promise<AccountInfo|null, undefined>}
  */
-function verifyNoneAsync(req, res, next) {
-    const token = req.cookies.token || req.query.token;
+function verifyReqNoneAsync(req, res, next) {
+    const token = getReqToken(req);
 
     return checkTokenAsync(token)
         .then((accInfo) => {
@@ -216,10 +230,8 @@ exports.DEBUG = {
 };
 
 exports.accountTypes = accountTypes;
-exports.authTokenAsync = authTokenAsync;
-exports.checkTokenAsync = checkTokenAsync;
-exports.verifyTokenAsync = verifyTokenAsync;
-exports.verifyNoneAsync = verifyNoneAsync;
+exports.verifyReqTokenAsync = verifyReqTokenAsync;
+exports.verifyReqNoneAsync = verifyReqNoneAsync;
 
 // POST /api/auth/login
 exports.authLoginReq = function (req, res, next) {
@@ -235,9 +247,9 @@ exports.authLoginReq = function (req, res, next) {
 
 // GET /api/auth/current
 exports.authCurrentReq = function (req, res, next) {
-    verifyTokenAsync(req, res, next, undefined)
+    checkTokenAsync(getReqToken(req))
         .then((accInfo) => {
-            res.send(accInfo);
+            res.status(200).send(accInfo);
         })
         .catch(() => {
             res.status(400).send({});

@@ -16,7 +16,7 @@ exports.findOrCreate = function (user) {
 // GET /api/user
 // parameters: req.body.user
 exports.getUserReq = function (req, res, next) {
-    auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
+    auth.verifyReqTokenAsync(req, res, next, undefined).then((accInfo) => {
 
         const reqParam = req.query;
 
@@ -53,13 +53,15 @@ exports.getUserReq = function (req, res, next) {
                 res.status(200).send(docs);
             }
         );
-    });
+    }, (err) => {
+    })
 };
+
 
 // POST /api/user/update
 // parameters: req.body.user, req.body.name, req.body.surname, req.body.mobile, req.body.email
 exports.postUserUpdateReq = function (req, res, next) {
-    auth.verifyTokenAsync(req, res, next, auth.accountTypes.STUDENT).then((accInfo) => {
+    auth.verifyReqTokenAsync(req, res, next, auth.accountTypes.STUDENT).then((accInfo) => {
 
         const reqParam = req.body;
 
@@ -121,5 +123,7 @@ exports.postUserUpdateReq = function (req, res, next) {
                     res.status(400).send({});
                 }
             });
-    });
+    }, (err) => {
+    })
 };
+

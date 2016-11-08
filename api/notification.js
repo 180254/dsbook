@@ -10,7 +10,7 @@ const Notification = mongoose.model("Notification", NotificationSchema);
 // GET /api/notification
 // parameters: req.query._id, req.query.recipient, req.query.status
 exports.getNotificationReq = function (req, res, next) {
-    auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
+    auth.verifyReqTokenAsync(req, res, next, undefined).then((accInfo) => {
 
         const reqParam = req.query;
 
@@ -68,6 +68,7 @@ exports.getNotificationReq = function (req, res, next) {
                 res.status(200).send(docs);
             }
         );
+    }, (err) => {
     })
 };
 
@@ -78,8 +79,8 @@ exports.getNotificationCounterReq = function (req, res, next) {
 
     // recipient param is given => api is public
     let verifyFunc = reqParam.recipient
-        ? auth.verifyNoneAsync
-        : auth.verifyTokenAsync;
+        ? auth.verifyReqNoneAsync
+        : auth.verifyReqTokenAsync;
 
     verifyFunc(req, res, next, undefined).then((accInfo) => {
         // recipient filter is not given => requester must be portier
@@ -126,13 +127,14 @@ exports.getNotificationCounterReq = function (req, res, next) {
                 res.status(200).send({counter: count})
             }
         );
+    }, (err) => {
     })
 };
 
 // POST /api/notification
 // parameters: req.body.recipient, req.body.content
 exports.postNotificationReq = function (req, res, next) {
-    auth.verifyTokenAsync(req, res, next, auth.accountTypes.PORTIER).then((accInfo) => {
+    auth.verifyReqTokenAsync(req, res, next, auth.accountTypes.PORTIER).then((accInfo) => {
 
         const reqParam = req.body;
 
@@ -157,13 +159,14 @@ exports.postNotificationReq = function (req, res, next) {
                 res.status(200).send(doc);
             }
         );
-    });
+    }, (err) => {
+    })
 };
 
 // POST /api/notification/status
 // parameters: req.body._id, req.body.status
 exports.postNotificationStatusReq = function (req, res, next) {
-    auth.verifyTokenAsync(req, res, next, undefined).then((accInfo) => {
+    auth.verifyReqTokenAsync(req, res, next, undefined).then((accInfo) => {
 
         const reqParam = req.body;
 
@@ -208,5 +211,6 @@ exports.postNotificationStatusReq = function (req, res, next) {
                     res.status(400).send({});
                 }
             });
-    });
+    }, (err) => {
+    })
 };

@@ -44,6 +44,14 @@ router.post("/api/user/update", apiUser.postUserUpdateReq);
 
 app.use("/", router);
 
+process.on("unhandledRejection", function (err) {
+    throw err;
+});
+
+process.on("uncaughtException", function (err) {
+    throw err;
+});
+
 const port = process.argv[2] || 3000;
 app.listen(port, function () {
     console.log("Live at Port " + port);
