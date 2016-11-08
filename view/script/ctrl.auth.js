@@ -41,7 +41,7 @@
                     }
                 })
                 .catch((err) => {
-                    console.log("AssertionError(" + err + ")");
+                    console.log("AssertionError(CA0," + err + ")");
                 });
         };
 

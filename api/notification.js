@@ -69,6 +69,7 @@ exports.getNotificationReq = function (req, res, next) {
             }
         );
     }, (err) => {
+        console.log("AssertionError(N0, " + err + ")");
     })
 };
 
@@ -128,6 +129,7 @@ exports.getNotificationCounterReq = function (req, res, next) {
             }
         );
     }, (err) => {
+        console.log("AssertionError(N1, " + err + ")");
     })
 };
 
@@ -160,6 +162,7 @@ exports.postNotificationReq = function (req, res, next) {
             }
         );
     }, (err) => {
+        console.log("AssertionError(N2, " + err + ")");
     })
 };
 
@@ -212,5 +215,6 @@ exports.postNotificationStatusReq = function (req, res, next) {
                 }
             });
     }, (err) => {
+        console.log("AssertionError(N3, " + err + ")");
     })
 };

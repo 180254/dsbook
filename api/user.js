@@ -54,6 +54,7 @@ exports.getUserReq = function (req, res, next) {
             }
         );
     }, (err) => {
+        console.log("AssertionError(U0, " + err + ")");
     })
 };
 
@@ -124,6 +125,7 @@ exports.postUserUpdateReq = function (req, res, next) {
                 }
             });
     }, (err) => {
+        console.log("AssertionError(U1, " + err + ")");
     })
 };
 
