@@ -1,0 +1,30 @@
+<div class="panel-group">
+    <toaster-container></toaster-container>
+
+    <div ng-repeat="item in data" class="col-md-6">
+        <div class="panel"
+             ng-class="{'panel-danger': item.status == 'new', 'panel-success': item.status == 'confirmed'}"
+             ng-if="item.status != 'closed'">
+
+            <div class="panel-heading">
+            </div>
+            <div class="panel-body">
+                <div>
+                    <strong>Wysłano: </strong>
+                    <span>{{item.date}}</span>
+                </div>
+                <div>
+                    <strong>Treść: </strong>
+                    <span>{{item.content}}</span>
+                </div>
+                <div>
+                    <strong>Status:</strong>
+                    <span class="text-danger"
+                          ng-if="item.status == 'new'">Niepotwierdzona</span>
+                    <span class="text-success"
+                          ng-if="item.status == 'confirmed'">Potwierdzona</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

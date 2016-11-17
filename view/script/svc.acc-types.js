@@ -11,11 +11,11 @@
         return {
             default_url: {
                 PORTIER: "/dashboard",
-                STUDENT: "",
+                STUDENT: "/userDashboard"
             },
             allowed_urls: {
                 PORTIER: ["/", "/auth", "/dashboard", "/notification"],
-                STUDENT: ["/", "/auth"]
+                STUDENT: ["/", "/auth", "/userDashboard"]
             },
         }
     }

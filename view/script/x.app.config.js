@@ -49,6 +49,13 @@
             controller: "DashboardCtrl"
         });
 
+        $stateProvider.state("userDashboard", {
+            parent: "root",
+            url: "/userDashboard",
+            templateUrl: "template/userDashboard.html",
+            controller: "UserDashboardCtrl"
+        });
+
         $stateProvider.state("notification", {
             parent: "root",
             url: "/notification",
