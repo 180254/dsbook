@@ -23,19 +23,22 @@ exports.getNotificationReq = function (req, res, next) {
             return;
         }
 
-        // recipient filter is given => requester must be portier or student must ask about yourself
-        if (
-            reqParam.recipient
-            && !(accInfo.accType === auth.accountTypes.PORTIER || accInfo.user.startsWith(reqParam.user))
-        ) {
-            res.status(403).send({});
-            return;
-        }
-
         // recipient should be array; semicolon separated string
         reqParam.recipient = reqParam.recipient
             ? reqParam.recipient.split(",")
             : undefined;
+
+        // recipient filter is given => requester must be portier or student must ask about yourself
+        if (
+            reqParam.recipient
+            && !(
+                accInfo.accType === auth.accountTypes.PORTIER
+                || reqParam.recipient.some(r => accInfo.user.startsWith(r))
+            )
+        ) {
+            res.status(403).send({});
+            return;
+        }
 
         // status should be array: semicolon separated string
         reqParam.status = reqParam.status
@@ -145,7 +148,7 @@ exports.postNotificationReq = function (req, res, next) {
             content: reqParam.content
         });
 
-        var error = newNotification.validateSync(undefined);
+        const error = newNotification.validateSync(undefined);
         if (error) {
             res.status(400).send({});
             return;

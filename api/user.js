@@ -95,7 +95,7 @@ exports.postUserUpdateReq = function (req, res, next) {
 
         // verify request is proper
         const newUser = new User(mongoUpdate);
-        var error = newUser.validateSync(undefined);
+        const error = newUser.validateSync(undefined);
         if (error) {
             res.status(400).send({});
             return;
