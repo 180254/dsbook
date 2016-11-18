@@ -1,7 +1,7 @@
 <div class="panel-group">
     <toaster-container></toaster-container>
 
-    <div ng-repeat="item in data" class="col-md-6">
+    <div ng-repeat="(key_item,item) in data" class="col-md-6">
         <div class="panel"
              ng-class="{'panel-danger': item.status == 'new', 'panel-success': item.status == 'confirmed'}"
              ng-if="item.status != 'closed'">
@@ -23,6 +23,15 @@
                           ng-if="item.status == 'new'">Niepotwierdzona</span>
                     <span class="text-success"
                           ng-if="item.status == 'confirmed'">Potwierdzona</span>
+                </div>
+
+                <div class="btn-group" ng-if="item.status != 'confirmed'">
+                    <button ng-repeat="(key, value) in predefButtons"
+                            type="submit" class="btn btn-primary"
+                            ng-click="sendPredefinedNotification(key_item,key)"
+                            ng-disabled="notAddForm.$invalid">
+                        {{value.button}}
+                    </button>
                 </div>
             </div>
         </div>
