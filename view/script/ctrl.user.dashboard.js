@@ -1,4 +1,4 @@
-(function() {
+(function () {
     "use strict";
 
     angular
@@ -31,12 +31,15 @@
             (user.replace(/-[0-9]+$/, "") || "-");
 
         NotificationApi.main.get({
-                status: "new",
-                recipient: recipient
-            }).$promise
+            status: "new",
+            recipient: recipient
+        }).$promise
             .then((res) => {
                 $scope.data = res;
-            }).catch((error) => {
+            })
+            .catch((err) => {
+                console.log(err);
+
                 toaster.pop({
                     type: "error",
                     title: "Błąd!",
@@ -46,7 +49,6 @@
             });
 
 
-
         $scope.sendNotification = (id, status, key) => {
             const sId = id; //??  || $scope.content;
             const sStatus = status; // ?? || $scope.content;
@@ -54,9 +56,9 @@
                 return;
             }
             NotificationApi.status.post({
-                    _id: sId,
-                    status: sStatus
-                }).$promise
+                _id: sId,
+                status: sStatus
+            }).$promise
                 .then(() => {
                     $scope.data[key].status = sStatus;
                     toaster.pop({
@@ -66,14 +68,16 @@
                         showCloseButton: true
                     })
                 })
-                .catch(() =>
+                .catch((err) => {
+                    console.log(err);
+
                     toaster.pop({
                         type: "error",
                         title: "Porażka!",
                         body: "Nie udało się wysłać powiadomienia.",
                         showCloseButton: true
                     })
-                );
+                });
         };
 
         $scope.sendPredefinedNotification = (id_key, key) => {

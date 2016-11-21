@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const apiAuth = require("./api/auth.js");
 const apiNotification = require("./api/notification.js");
 const apiUser = require("./api/user.js");
+const apiSms = require("./api/sms.js");
 
 const mongoose = require("mongoose");
 const dbUri = "mongodb://localhost/dsbook";
@@ -41,6 +42,9 @@ router.post("/api/notification/status", apiNotification.postNotificationStatusRe
 
 router.get("/api/user", apiUser.getUserReq);
 router.post("/api/user/update", apiUser.postUserUpdateReq);
+
+apiSms.initConfig();
+router.post("/api/sms/send", apiSms.postSmsSendReq);
 
 app.use("/", router);
 

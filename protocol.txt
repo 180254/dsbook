@@ -168,3 +168,13 @@ POST /api/user/update
   "mobile": "500200101",
   "email": "johny.englishX@gmail.com
 }
+
+######################
+
+POST /api/sms/send
+{
+  "notification_id": 0
+}
+{
+ "status": "OK"
+}

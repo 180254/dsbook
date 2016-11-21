@@ -9,10 +9,11 @@
         "$scope",
         "$rootScope",
         "toaster",
-        "NotificationApi"
+        "NotificationApi",
+        "SmsApi"
     ];
 
-    function DashboardCtrl($scope, $rootScope, toaster, NotificationApi) {
+    function DashboardCtrl($scope, $rootScope, toaster, NotificationApi, SmsApi) {
         $scope.predefRecipients = [
             "101", "201", "301", "302"
         ];
@@ -46,26 +47,35 @@
                 return;
             }
 
+
             NotificationApi.main.post({
                 recipient: $scope.recipient,
                 content: sContent
             }).$promise
-                .then(() => {
+                .then((notification) => {
                     toaster.pop({
                         type: "success",
                         title: "Sukces!",
                         body: "Powiadomienie zostało wysłane.",
                         showCloseButton: true
-                    })
+                    });
+
+                    SmsApi.send.post({
+                        "notification_id": notification._id
+                    }).$promise
+                        .catch((err) => console.log(err));
+
                 })
-                .catch(() =>
+                .catch((err) => {
+                    console.log(err);
+
                     toaster.pop({
                         type: "error",
                         title: "Porażka!",
                         body: "Nie udało się wysłać powiadomienia.",
                         showCloseButton: true
-                    })
-                );
+                    });
+                });
         };
 
         $scope.sendPredefinedNotification = (key) => {

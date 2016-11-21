@@ -16,15 +16,22 @@ const UserSchema = new Schema({
         type: String,
         required: false
     },
-    mobile: { // 500200100
+    // the ONLY allowed format is 48[9 digits]
+    // only this format is supported by sms api
+    // format must be forced and/or validated
+    mobile: { // 48500200100
         type: String,
         required: false,
     },
+    // remember to check if email is valid
     email: { // johny.english@gmail.com
         type: String,
         required: false
     }
 }, {
+    // http://mongoosejs.com/docs/guide.html#strict
+    // "ensures that values passed to our model constructor
+    // that were not specified in our schema do not get saved to the db."
     strict: true
 });
 

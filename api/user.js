@@ -5,7 +5,7 @@ const supergoose = require('supergoose');
 const auth = require("./auth");
 
 const UserSchema = require("./../model/user.js");
-UserSchema.plugin(supergoose);
+UserSchema.plugin(supergoose); // findOrCreate
 
 const User = mongoose.model("User", UserSchema);
 

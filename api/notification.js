@@ -6,7 +6,6 @@ const auth = require("./auth");
 const NotificationSchema = require("./../model/notification.js");
 const Notification = mongoose.model("Notification", NotificationSchema);
 
-
 // GET /api/notification
 // parameters: req.query._id, req.query.recipient, req.query.status
 exports.getNotificationReq = function (req, res, next) {

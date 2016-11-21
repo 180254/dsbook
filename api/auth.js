@@ -21,6 +21,10 @@ const accountTypes = {
     STUDENT: "STUDENT"
 };
 
+/**
+ * Predefined accounts that are proper but aren't authorized by authorization logic/server (example: radius).
+ * @type {[*]}
+ */
 const predefAccount = [
     {
         username: "portier",

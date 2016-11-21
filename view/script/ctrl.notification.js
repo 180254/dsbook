@@ -21,7 +21,9 @@
             .then((res) => {
                 $scope.data = res;
             })
-            .catch((error) => {
+            .catch((err) => {
+                console.log(err);
+
                 toaster.pop({
                     type: "error",
                     title: "Błąd!",
