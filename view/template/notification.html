@@ -1,14 +1,14 @@
 <div class="panel-group">
     <toaster-container></toaster-container>
 
-    <div ng-repeat="item in data" class="col-md-6">
+    <div ng-repeat="(key_item,item) in data" class="col-md-4">
         <div class="panel"
              ng-class="{'panel-danger': item.status == 'new', 'panel-success': item.status == 'confirmed'}"
-             ng-if="item.status != 'closedó'">
+             ng-if="item.status != 'closed'">
 
             <div class="panel-heading">
                 <span>&nbsp;</span>
-                <i class=" pull-right fa fa-times" aria-hidden="true" title="Usuń"></i>
+                <button class="close pull-right fa fa-times" aria-hidden="true" title="Usuń" ng-click="closeNotification(key_item)"></button>
             </div>
             <div class="panel-body">
                 <div>
