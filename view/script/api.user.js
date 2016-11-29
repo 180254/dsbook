@@ -18,6 +18,10 @@
                     },
                     post: {
                         method: "POST"
+                    },
+                    update: {
+                        method: 'POST',
+                        url: '/api/user/update'
                     }
                 }
             ),

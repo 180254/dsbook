@@ -15,7 +15,7 @@
             },
             allowed_urls: {
                 PORTIER: ["/", "/auth", "/dashboard", "/notification"],
-                STUDENT: ["/", "/auth", "/userDashboard"]
+                STUDENT: ["/", "/auth", "/userDashboard", '/profile']
             },
         }
     }

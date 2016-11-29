@@ -32,7 +32,9 @@
 
                     <ul class="nav navbar-nav navbar-right" ng-if="user">
                         <li>
-                            <p class="navbar-text">{{user.user}}</p>
+                            <a ui-sref="profile">
+                                <p class="navbar-text">{{user.user}}</p>
+                            </a>
                         </li>
                         <li>
                             <p class="navbar-text">

@@ -63,6 +63,13 @@
             controller: "NotificationCtrl"
         });
 
+        $stateProvider.state("profile", {
+            parent: "root",
+            url: "/profile",
+            templateUrl: "template/profile.html",
+            controller: "ProfileCtrl"
+        });
+
         $urlRouterProvider.otherwise("/");
     }
 })();
