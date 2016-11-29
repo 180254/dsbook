@@ -30,10 +30,10 @@
                         </li>
                     </ul>
 
-                    <ul class="nav navbar-nav navbar-right" ng-if="user">
-                        <li>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="hidden-xs" ui-sref-active="active">
                             <a ui-sref="profile">
-                                <p class="navbar-text">{{user.user}}</p>
+                                <span>{{user.user}}</span>
                             </a>
                         </li>
                         <li>
