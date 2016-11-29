@@ -16,21 +16,20 @@
             user: $rootScope.user.user
         }).$promise
             .then((data) => {
-                $scope.user = data[0]
-        });
+                $scope.user = data[0];
+            });
 
         $scope.update = () => {
-            console.log($scope.user)
             UserApi.main.update({
-                "user": $scope.user,
-                "name": $scope.name,
-                "surname": $scope.surname,
-                "mobile": $scope.mobile,
-                "email": $scope.email
+                "user": $scope.user.user,
+                "name": $scope.user.name,
+                "surname": $scope.user.surname,
+                "mobile": $scope.user.mobile,
+                "email": $scope.user.email
             }).$promise
                 .then((data) => {
-                $scope.user = data[0]
-            })
+                    $scope.user = data;
+                });
         }
     }
 })();

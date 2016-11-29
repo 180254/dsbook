@@ -9,19 +9,27 @@
         </div>
         <div class="row">
             <div class="col-xs-6 col-sm-3 col-md-4"><label>Imię</label></div>
-            <div class="col-xs-6 col-sm-9 col-md-8" editable-text="user.name" onbeforesave="update()">{{user.name || 'Nie ustawiono'}}</div>
+            <div class="col-xs-6 col-sm-9 col-md-8" editable-text="user.name" onaftersave="update()">{{user.name || 'Nie
+                ustawiono'}}
+            </div>
         </div>
         <div class="row">
             <div class="col-xs-6 col-sm-3 col-md-4"><label>Nazwisko</label></div>
-            <div class="col-xs-6 col-sm-9 col-md-8" editable-text="user.surname" onbeforesave="update()">{{user.surname || 'Nie ustawiono'}}</div>
+            <div class="col-xs-6 col-sm-9 col-md-8" editable-text="user.surname" onaftersave="update()">{{user.surname
+                || 'Nie ustawiono'}}
+            </div>
         </div>
         <div class="row">
             <div class="col-xs-6 col-sm-3 col-md-4"><label>Numer telefonu</label></div>
-            <div class="col-xs-6 col-sm-9 col-md-8" editable-text="user.mobile" onbeforesave="update()">{{user.mobile || 'Nie ustawiono'}}</div>
+            <div class="col-xs-6 col-sm-9 col-md-8" editable-text="user.mobile" onaftersave="update()">{{user.mobile ||
+                'Nie ustawiono'}}
+            </div>
         </div>
         <div class="row">
             <div class="col-xs-6 col-sm-3 col-md-4"><label>Adres email</label></div>
-            <div class="col-xs-6 col-sm-9 col-md-8" editable-text="user.email "onbeforesave="update()">{{user.email || 'Nie ustawiono'}}</div>
+            <div class="col-xs-6 col-sm-9 col-md-8" editable-text="user.email " onaftersave="update()">{{user.email ||
+                'Nie ustawiono'}}
+            </div>
         </div>
     </div>
 </div><br/>
