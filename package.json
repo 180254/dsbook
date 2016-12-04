@@ -13,7 +13,8 @@
     "mongoose": "^4.6.8",
     "node-cache": "^4.1.0",
     "serve-static": "^1.11.1",
-    "supergoose": "^0.2.4"
+    "supergoose": "^0.2.4",
+	"nodemailer": "2.6.4"
   },
   "devDependencies": {
     "angular": "^1.5.8",

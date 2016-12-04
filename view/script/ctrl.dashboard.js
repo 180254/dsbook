@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
     "use strict";
 
     angular
@@ -10,10 +10,11 @@
         "$rootScope",
         "toaster",
         "NotificationApi",
-        "SmsApi"
+        "SmsApi",
+		"EmailApi"
     ];
 
-    function DashboardCtrl($scope, $rootScope, toaster, NotificationApi, SmsApi) {
+    function DashboardCtrl($scope, $rootScope, toaster, NotificationApi, SmsApi, EmailApi) {
         $scope.predefRecipients = [
             "101", "201", "301", "302"
         ];
@@ -64,6 +65,11 @@
                         "notification_id": notification._id
                     }).$promise
                         .catch((err) => console.log(err));
+						
+					EmailApi.send.post({
+                        "notification_id": notification._id
+                     }).$promise
+                         .catch((err) => console.log(err));
 
                 })
                 .catch((err) => {

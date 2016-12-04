@@ -9,6 +9,7 @@ const apiAuth = require("./api/auth.js");
 const apiNotification = require("./api/notification.js");
 const apiUser = require("./api/user.js");
 const apiSms = require("./api/sms.js");
+const apiEmail = require("./api/email.js");
 
 const mongoose = require("mongoose");
 const dbUri = "mongodb://localhost/dsbook";
@@ -45,6 +46,9 @@ router.post("/api/user/update", apiUser.postUserUpdateReq);
 
 apiSms.initConfig();
 router.post("/api/sms/send", apiSms.postSmsSendReq);
+
+apiEmail.initConfig();
+router.post("/api/email/send", apiEmail.postemailSendReq);
 
 app.use("/", router);
 
