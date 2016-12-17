@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(serveStatic("view", {"index": ["index.html"]}));
 
-apiAuth.DEBUG.set(true);
+apiAuth.DEBUG.set(true); // TRUE for "DEBUG-AUTH", FALSE for "RADIUS-AUTH"
 router.post("/api/auth/login", apiAuth.authLoginReq);
 router.get("/api/auth/current", apiAuth.authCurrentReq);
 router.post("/api/auth/verify", apiAuth.authVerifyReq);
