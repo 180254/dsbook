@@ -1,5 +1,7 @@
 "use strict";
 
+const exec = require('child_process').exec;
+
 const NodeCache = require("node-cache");
 
 const tokensMap = new NodeCache({
@@ -70,9 +72,21 @@ function authAsync(username, password) {
 
             const callback = loggedIn ? resolve : reject;
             setTimeout(() => callback("authAsync=" + loggedIn), 500);
-        } else {
-            reject();
-            // TODO: implement real auth logic
+
+        } else { // REAL AUTH LOGIC
+            const radtest = exec('radtest ' + username + ' ' + password +
+                ' localhost 18128 testing123 | grep rad_recv | cut -d " " -f2 | head -1');
+
+            radtest.stdout.on('data', function (data) {
+                const response = data.split('\n')[0];
+
+                if (response == "Access-Accept") {
+                    resolve("ok")
+                }
+                else {
+                    reject("reject")
+                }
+            });
         }
     });
 }
