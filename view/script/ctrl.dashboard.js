@@ -11,10 +11,15 @@
         "toaster",
         "NotificationApi",
         "SmsApi",
-		"EmailApi"
+		"EmailApi",
+		"GoogleService"
     ];
 
-    function DashboardCtrl($scope, $rootScope, toaster, NotificationApi, SmsApi, EmailApi) {
+    function DashboardCtrl($scope, $rootScope, toaster, NotificationApi, SmsApi, EmailApi, GoogleService) {
+		
+		var workSheetUsers = GoogleService.GetJsonWorkSheet.get();
+		console.log(workSheetUsers);
+		
         $scope.predefRecipients = [
             "101", "201", "301", "302"
         ];

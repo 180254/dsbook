@@ -10,5 +10,10 @@
 	"secure": "true",
 	"user": "",
 	"pass": ""
-  }
+  },
+  "googleService":
+  {
+     "sheetID": "1cKENGl60Vkis4u_Ul7LKRQ8iSD1yc6wiqxD4Tsq8yzM",
+	 "scope": "https://www.googleapis.com/auth/drive.readonly"
+  }  
 }

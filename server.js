@@ -11,6 +11,8 @@ const apiUser = require("./api/user.js");
 const apiSms = require("./api/sms.js");
 const apiEmail = require("./api/email.js");
 
+const googleService = require("./api/googleService.js")
+
 const mongoose = require("mongoose");
 const dbUri = "mongodb://localhost/dsbook";
 mongoose.Promise = global.Promise;
@@ -49,6 +51,9 @@ router.post("/api/sms/send", apiSms.postSmsSendReq);
 
 apiEmail.initConfig();
 router.post("/api/email/send", apiEmail.postemailSendReq);
+
+googleService.initConfig();
+router.get("/api/googleService/GetJsonWorkSheet", googleService.GetJsonWorkSheet)
 
 app.use("/", router);
 
