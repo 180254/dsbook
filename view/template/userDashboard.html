@@ -1,7 +1,11 @@
 <div class="panel-group">
     <toaster-container></toaster-container>
 
-    <div ng-repeat="(key_item,item) in data" class="col-md-6">
+    <h2 class="text-center">Powiadomienia</h2>
+
+    <hr>
+
+    <div ng-repeat="(key_item,item) in data" class="col-md-4">
         <div class="panel"
              ng-class="{'panel-danger': item.status == 'new', 'panel-success': item.status == 'confirmed'}"
              ng-if="item.status != 'closed'">
@@ -27,7 +31,7 @@
 
                 <div class="btn-group" ng-if="item.status != 'confirmed'">
                     <button ng-repeat="(key, value) in predefButtons"
-                            type="submit" class="btn btn-primary"
+                            type="submit" class="btn btn-danger"
                             ng-click="sendPredefinedNotification(key_item,key)"
                             ng-disabled="notAddForm.$invalid">
                         {{value.button}}
@@ -35,5 +39,6 @@
                 </div>
             </div>
         </div>
+        <br>
     </div>
 </div>

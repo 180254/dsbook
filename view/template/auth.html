@@ -1,15 +1,20 @@
 <div class="container-auth">
+
     <div class="card card-container">
+
         <h2 class="login-title text-center">Logowanie</h2>
 
         <hr>
 
-        <form class="form-sign-in">
-            <span id="welcome-msg" class="welcome-msg" ng-if="!!notInfo">
-                Witaj {{notInfo.user}}!.<br/>Masz {{notInfo.counter}} oczekujących powiadomień.
-            </span>
+        <div id="welcome-msg" class="alert alert-info alert-dismissable" ng-if="!!notInfo">
+            <a href="" class="close" data-dismiss="alert" aria-label="close">×</a>
+            <p>Witaj {{notInfo.user}}!.</p>
+            <p>Masz {{notInfo.counter}} oczekujących powiadomień.</p>
+        </div>
 
-            <p class="input-title">Użytkownik</p>
+        <form class="form-sign-in">
+
+            <p class="input-title">Login</p>
 
             <input type="text" id="input-login" class="login-box"
                    placeholder="101-2" required="required" autofocus="autofocus"

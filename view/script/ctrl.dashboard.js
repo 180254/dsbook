@@ -27,19 +27,24 @@
         $scope.predefButtons = {
             pizza: {
                 button: "Pizza",
-                msg: "Na portierni czeka pizza zamówiona przez osobę z tego pokoju."
+                msg: "Na portierni czeka pizza zamówiona przez osobę z tego pokoju.",
+                icon: "fa-cutlery"
             },
             package: {
                 button: "Paczka",
-                msg: "Na portierni czeka paczka zamówiona przez osobę z tego pokoju."
+                msg: "Na portierni czeka paczka zamówiona przez osobę z tego pokoju.",
+                icon: "fa-archive"
             },
             manager: {
                 button: "Wezwanie do kierownika",
-                msg: "Wezwanie od kierownika."
+                msg: "Wezwanie od kierownika.",
+                icon: "fa-user"
             },
             portier: {
                 button: "Wezwanie do portiera",
-                msg: "Wezwanie do portiera."
+                msg: "Wezwanie do portiera.",
+                icon: "fa-user-plus"
+
             }
         };
 
@@ -75,6 +80,8 @@
                         "notification_id": notification._id
                      }).$promise
                          .catch((err) => console.log(err));
+
+                    $scope.recipient = "";
 
                 })
                 .catch((err) => {

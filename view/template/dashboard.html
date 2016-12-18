@@ -1,49 +1,62 @@
-<div ng-controller="DashboardCtrl">
+<div ng-controller="DashboardCtrl" class="container">
     <toaster-container></toaster-container>
+    <h2 class="text-center">Dodaj zgłoszenie</h2>
+
+    <hr>
+
+    <div class="alert alert-info alert-dismissable fade in">
+        <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        Witaj,<br>
+        Poniższy panel służy do wysyłania wiadomosći grupowych do mieszkańców akademików Politechniki Lódzkiej<br>
+        W celu wysłania wiadomosći <strong>wybierz numer pokoju,</strong>następnie <strong>wprowadź treść
+        wiadomosći</strong> i kliknij przycisk <strong>"Wyślij informację"</strong>
+    </div>
+
 
     <form id="notification-add-form" name="notAddForm">
-        <p>
-            Witaj,<br>
-            Poniższy panel służy do wysyłania wiadomosći grupowych do mieszkańców akademików Politechniki Lódzkiej<br>
-            W celu wysłania wiadomosći <strong>wybierz numer pokoju,</strong>następnie <strong>wprowadź treść
-            wiadomosći</strong> i kliknij przycisk <strong>"Wyślij informację"</strong>
-        </p>
 
         <div class="form-group">
-            <label for="selectedRecipient">Informacja dla pokoju numer</label>
-            <input class="form-control"
+            <h3 for="selectedRecipient">Numer pokoju</h3>
+            <input class="form-control input-lg"
                    id="selectedRecipient"
                    type="text" placeholder="Wprowadź numer pokoju"
                    uib-typeahead="item for item in predefRecipients"
                    ng-model="recipient"
-                   required="required">
+                   required="required"
+                   autocomplete="off">
         </div>
 
-        <div class="btn-group btn-group-lg">
-            <button ng-repeat="(key, value) in predefButtons"
-                    type="submit" class="btn btn-primary"
-                    ng-click="sendPredefinedNotification(key)"
-                    ng-disabled="notAddForm.$invalid">
-                {{value.button}}
-            </button>
+        <h3 for="selectedRecipient">Rodzaj zgłoszenia</h3>
 
-            <button type="button" class="btn btn-primary" ng-click="otherButton()">
-                Inne
-            </button>
+        <div class="text-center">
+            <div class="btn-group btn-group-lg">
+                <button ng-repeat="(key, value) in predefButtons"
+                        class="btn btn-lg btn-primary"
+                        type="submit" class="btn btn-primary"
+                        ng-click="sendPredefinedNotification(key)"
+                        ng-disabled="notAddForm.$invalid">
+                    <i class="fa {{value.icon}}" aria-hidden="true"></i>
+                    {{value.button}}
+                </button>
+
+                <button type="btn btn-lg btn-primary" class="btn btn-lg btn-primary" ng-click="otherButton()">
+                    Inne
+                </button>
+            </div>
         </div>
 
         <br><br>
 
         <div ng-show="showCustomNotification">
             <div class="form-group">
-                <label for="messageContent">Inne zgłoszenie</label>
+                <h3 for="messageContent">Treść zgłoszenia typu 'inne'</h3>
                 <textarea id="messageContent"
-                          class="form-control"
+                          class="form-control input-lg"
                           placeholder="Wpisz treść zgłoszenia"
                           ng-model="content"></textarea>
             </div>
 
-            <button type="submit" class="btn btn-info pull-right"
+            <button type="submit" class="btn btn-lg btn-primary pull-right"
                     ng-click="sendNotification()"
                     ng-disabled="notAddForm.$invalid">
                 <i class="fa fa-send" aria-hidden="true"></i>
