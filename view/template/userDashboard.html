@@ -1,9 +1,11 @@
 <div class="panel-group">
     <toaster-container></toaster-container>
 
-    <h2 class="text-center">Powiadomienia</h2>
+    <h2 class="text-center">Aktywne powiadomienia</h2>
 
     <hr>
+
+    <h3 class="text-center" ng-if="data == ''">Brak powiadomień</h3>
 
     <div ng-repeat="(key_item,item) in data" class="col-md-4">
         <div class="panel"
@@ -15,7 +17,7 @@
             <div class="panel-body">
                 <div>
                     <strong>Wysłano: </strong>
-                    <span>{{item.date}}</span>
+                    <span>{{item.date | date:'dd.MM.y'}}</span>
                 </div>
                 <div>
                     <strong>Treść: </strong>
@@ -34,6 +36,14 @@
                             type="submit" class="btn btn-danger"
                             ng-click="sendPredefinedNotification(key_item,key)"
                             ng-disabled="notAddForm.$invalid">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                        {{value.button}}
+                    </button>
+                </div>
+                <div class="btn-group" ng-if="item.status == 'confirmed'">
+                    <button ng-repeat="(key, value) in predefButtons"
+                            type="submit" class="btn accept disabled">
+                        <i class="fa fa-check" aria-hidden="true"></i>
                         {{value.button}}
                     </button>
                 </div>

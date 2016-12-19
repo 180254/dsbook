@@ -21,13 +21,6 @@
     margin-bottom: 2px;
 }
 
-.container-auth .login-title {
-    font-family: "myriad-pro", sans-serif;
-    font-style: normal;
-    font-weight: 100;
-    color: rgba(164, 164, 164, 0.44);
-}
-
 .container-auth .card-container.card {
     max-width: 350px;
 }
@@ -83,11 +76,6 @@
     box-sizing: border-box;
 }
 
-.container-auth .status-msg {
-    color: red;
-    text-align: center;
-    font-size: 1.2em;
-}
 
 .btn {
     font-weight: 700;

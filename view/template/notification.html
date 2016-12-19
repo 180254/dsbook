@@ -1,6 +1,12 @@
 <div class="panel-group">
     <toaster-container></toaster-container>
 
+    <h2 class="text-center">Aktywne zgłoszenia</h2>
+
+    <hr>
+
+    <h3 class="text-center" ng-if="data == ''">Brak powiadomień</h3>
+
     <div ng-repeat="(key_item,item) in data" class="col-md-4">
         <div class="panel"
              ng-class="{'panel-danger': item.status == 'new', 'panel-success': item.status == 'confirmed'}"
@@ -13,7 +19,7 @@
             <div class="panel-body">
                 <div>
                     <strong>Wysłano: </strong>
-                    <span>{{item.date}}</span>
+                    <span>{{item.date | date:'dd.MM.y'}}</span>
                 </div>
                 <div>
                     <strong>Odbiorca: </strong>

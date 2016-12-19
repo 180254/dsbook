@@ -1,15 +1,18 @@
 <div class="container-auth">
 
+    <br>
+
     <div class="card card-container">
 
-        <h2 class="login-title text-center">Logowanie</h2>
+        <h2 class="text-center">Logowanie</h2>
 
         <hr>
 
         <div id="welcome-msg" class="alert alert-info alert-dismissable" ng-if="!!notInfo">
             <a href="" class="close" data-dismiss="alert" aria-label="close">×</a>
             <p>Witaj {{notInfo.user}}!.</p>
-            <p>Masz {{notInfo.counter}} oczekujących powiadomień.</p>
+            <p class="text-center" ng-if="notInfo.counter != 0">Masz {{notInfo.counter}} oczekujących powiadomień.</p>
+            <p class="text-center" ng-if="notInfo.counter == 0">Nie masz oczekujących powiadomień</p>
         </div>
 
         <form class="form-sign-in">
@@ -31,8 +34,10 @@
                 Zaloguj
             </button>
 
-            <div id="status-msg" class="status-msg"
-                 ng-bind="statusMsg">
+            <div id="status-msg" class="text-center" ng-if="statusMsg">
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                <br>
+                <span>{{statusMsg}}</span>
             </div>
 
         </form>

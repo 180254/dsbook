@@ -1,41 +1,35 @@
+<h2 class="text-center">Edytuj profil</h2>
+
+<hr>
+
 <div class="card card-container">
-    <h2 class="text-center">Edytuj profil</h2>
 
-    <hr>
+    <br>
 
-    <div>
-
-        <dl class="dl-horizontal">
-            <dt><label>Nazwa użytkownika</label></dt>
-            <dd>{{user.user}}</dd>
-
-            <br>
-
-            <dt>Imię</dt>
-            <dd editable-text="user.name" onaftersave="update()">{{user.name || 'Nie ustawiono'}}</dd>
-
-            <br>
-
-            <dt>Nazwisko</dt>
-            <dd editable-text="user.surname" onaftersave="update()">{{user.surname || 'Nie ustawiono'}}</dd>
-
-            <br>
-
-            <dt>Numer telefonu</dt>
-            <dd editable-text="user.mobile" onaftersave="update()">{{user.mobile || 'Nie ustawiono'}}</dd>
-
-            <br>
-
-            <dt>Adres email</dt>
-            <dd editable-text="user.email" onaftersave="update()">{{user.email || 'Nie ustawiono'}}</dd>
-
-        </dl>
+    <dl class="dl-horizontal">
+        <dt><label>Nazwa użytkownika</label></dt>
+        <dd>{{user.user}}</dd>
 
         <br>
 
-        <div class="text-center">
-            <button ui-sref="userDashboard" class="btn btn-default">Powrót do strony głównej</button>
-        </div>
-    </div>
+        <dt>Imię</dt>
+        <dd editable-text="user.name" onaftersave="update()">{{user.name || 'Nie ustawiono'}}</dd>
+
+        <br>
+
+        <dt>Nazwisko</dt>
+        <dd editable-text="user.surname" onaftersave="update()">{{user.surname || 'Nie ustawiono'}}</dd>
+
+        <br>
+
+        <dt>Numer telefonu</dt>
+        <dd editable-text="user.mobile" onaftersave="update()">{{user.mobile || 'Nie ustawiono'}}</dd>
+
+        <br>
+
+        <dt>Adres email</dt>
+        <dd editable-text="user.email" onaftersave="update()">{{user.email || 'Nie ustawiono'}}</dd>
+
+    </dl>
 
 </div>
