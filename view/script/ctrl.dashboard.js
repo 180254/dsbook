@@ -21,7 +21,7 @@
 		console.log(workSheetUsers);
 		
         $scope.predefRecipients = [
-            "101", "201", "301", "302"
+            "101", "201", "301", "302","302","302","302","302","302","302","302","302","302","302"
         ];
 
         $scope.predefButtons = {

@@ -20,7 +20,7 @@
             <input class="form-control input-lg"
                    id="selectedRecipient"
                    type="text" placeholder="Wprowadź numer pokoju"
-                   uib-typeahead="item for item in predefRecipients"
+                   uib-typeahead="item for item in predefRecipients | filter:$viewValue | limitTo:8"
                    ng-model="recipient"
                    required="required"
                    autocomplete="off"
