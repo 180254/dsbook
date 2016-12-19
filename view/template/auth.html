@@ -8,7 +8,7 @@
 
         <hr>
 
-        <div id="welcome-msg" class="alert alert-info alert-dismissable" ng-if="!!notInfo">
+        <div id="welcome-msg" class="alert alert-dismissable" ng-class="{'alert-success': notInfo.counter  == 0, 'alert-warning': notInfo.counter  != 0}" ng-if="!!notInfo">
             <a href="" class="close" data-dismiss="alert" aria-label="close">×</a>
             <p>Witaj {{notInfo.user}}!.</p>
             <p class="text-center" ng-if="notInfo.counter != 0">Masz {{notInfo.counter}} oczekujących powiadomień.</p>

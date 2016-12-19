@@ -23,7 +23,9 @@
                    uib-typeahead="item for item in predefRecipients"
                    ng-model="recipient"
                    required="required"
-                   autocomplete="off">
+                   autocomplete="off"
+                   ng-maxlength="3"
+                   ng-minlength="3">
         </div>
 
         <h3 for="selectedRecipient">Rodzaj zgłoszenia</h3>
@@ -47,13 +49,14 @@
 
         <br><br>
 
-        <div ng-show="showCustomNotification">
+        <div ng-if="showCustomNotification">
             <div class="form-group">
                 <h3 for="messageContent">Treść zgłoszenia typu 'inne'</h3>
                 <textarea id="messageContent"
                           class="form-control input-lg"
                           placeholder="Wpisz treść zgłoszenia"
-                          ng-model="content"></textarea>
+                          ng-model="content">
+                </textarea>
             </div>
 
             <button type="submit" class="btn btn-lg btn-primary pull-right"
