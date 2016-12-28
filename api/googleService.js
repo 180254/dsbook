@@ -1,7 +1,14 @@
 "use strict";
 const fs = require("fs");
 var gsjson = require('google-spreadsheet-to-json');
-var creds = require('../Dsbook-a7c5a83926c6.json');
+
+var creds;
+try {
+    creds = require('../Dsbook-a7c5a83926c6.json');
+} catch(err) {
+    creds = null;
+}
+
 var google = require('googleapis');
 
 let config = {};
@@ -16,6 +23,10 @@ exports.GetJsonWorkSheet = GetJsonWorkSheet;
 
  function GetJsonWorkSheet() {
 
+ 	if(!creds) {
+ 		return [];
+	}
+
 	var jwtClient = new google.auth.JWT(
 	  creds.client_email,
 	  null,
@@ -29,7 +40,7 @@ exports.GetJsonWorkSheet = GetJsonWorkSheet;
 		console.log(err);
 		return;
 	  }
-	
+
 		gsjson({
 			spreadsheetId: config.sheetID,
 			token: tokens.access_token,

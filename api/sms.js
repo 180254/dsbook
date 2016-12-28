@@ -161,7 +161,10 @@ exports.postSmsSendReq = function (req, res, next) {
             uFind(notification, (users) => {
                 for (const user of users) {
 
-                    if (!user.mobile) {
+                    if (!user.wantSms) {
+                        console.log(`sms-api[${notID}][${user.user}]: don not want sms`);
+
+                    } else if (!user.mobile) {
                         console.log(`sms-api[${notID}][${user.user}]: mobile not given`);
 
                     } else if (!user.mobile.match(/48[0-9]{9}/)) {

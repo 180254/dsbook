@@ -10,11 +10,13 @@ const UserSchema = new Schema({
     },
     name: { // Johny
         type: String,
-        required: false
+        required: false,
+        default: "",
     },
     surname: { // English
         type: String,
-        required: false
+        required: false,
+        default: "",
     },
     // the ONLY allowed format is 48[9 digits]
     // only this format is supported by sms api
@@ -22,11 +24,25 @@ const UserSchema = new Schema({
     mobile: { // 48500200100
         type: String,
         required: false,
+        default: "",
     },
     // remember to check if email is valid
     email: { // johny.english@gmail.com
         type: String,
-        required: false
+        required: false,
+        default: "",
+    },
+    // send e-mail on notification?
+    wantEmail: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    // send sms on notification
+    wantSms: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 }, {
     // http://mongoosejs.com/docs/guide.html#strict

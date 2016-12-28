@@ -131,8 +131,10 @@ exports.postemailSendReq = function (req, res, next) {
             uFind(notification, (users) => {
                 for (const user of users) {
 
-                    if (!user.email) {
-                        console.log(`email-api[${notID}][${user.user}]: mobile not given`);
+                    if (!user.wantEmail) {
+                        console.log(`email-api[${notID}][${user.user}]: don not want email`);
+                    } else if (!user.email) {
+                        console.log(`email-api[${notID}][${user.user}]: email not given`);
                     } else {
                         sendEmail(user.email);
                     }
@@ -146,6 +148,3 @@ exports.postemailSendReq = function (req, res, next) {
         console.log("AssertionError(S0, " + err + ")");
     })
 };
-
-
-	

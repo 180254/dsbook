@@ -1,8 +1,8 @@
 {
   "gsmServiceApi": {
     "__url__": " http://bramka.gsmservice.pl/",
-    "login": "sdf",
-    "password": "sdf"
+    "login": "",
+    "password": ""
   },  
   "emailService": {
   	"host": "smtp.gmail.com",

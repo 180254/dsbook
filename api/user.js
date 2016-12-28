@@ -60,7 +60,8 @@ exports.getUserReq = function (req, res, next) {
 
 
 // POST /api/user/update
-// parameters: req.body.user, req.body.name, req.body.surname, req.body.mobile, req.body.email
+// parameters: req.body.user, req.body.name, req.body.surname, req.body.mobile, req.body.email,
+// req.body.wantEmail, req.body.wantSms
 exports.postUserUpdateReq = function (req, res, next) {
     auth.verifyReqTokenAsync(req, res, next, auth.accountTypes.STUDENT).then((accInfo) => {
 
@@ -92,6 +93,8 @@ exports.postUserUpdateReq = function (req, res, next) {
         reqParam.surname && (mongoUpdate.surname = reqParam.surname);
         reqParam.mobile && (mongoUpdate.mobile = reqParam.mobile);
         reqParam.email && (mongoUpdate.email = reqParam.email);
+        (mongoUpdate.wantEmail = reqParam.wantEmail);
+        (mongoUpdate.wantSms = reqParam.wantSms);
 
         // verify request is proper
         const newUser = new User(mongoUpdate);
@@ -119,6 +122,8 @@ exports.postUserUpdateReq = function (req, res, next) {
                     reqParam.surname && (doc.surname = reqParam.surname);
                     reqParam.mobile && (doc.mobile = reqParam.mobile);
                     reqParam.email && (doc.email = reqParam.email);
+                    (doc.wantEmail = reqParam.wantEmail);
+                    (doc.wantSms = reqParam.wantSms);
                     res.status(200).send(doc);
                 } else {
                     res.status(400).send({});
