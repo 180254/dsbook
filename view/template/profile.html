@@ -30,6 +30,20 @@
         <dt>Adres email</dt>
         <dd editable-text="user.email" onaftersave="update()">{{user.email || 'Nie ustawiono'}}</dd>
 
+        <br>
+
+        <dt>Zgoda na<br/>powiadomienia<br/> przez e-mail</dt>
+        <dd>
+            <input type="checkbox" ng-model="user.wantEmail" ng-change="update()">
+        </dd>
+
+        <br>
+
+        <dt>Zgoda na<br/>powiadomienia<br/>przez sms</dt>
+        <dd>
+            <input type="checkbox" ng-model="user.wantSms" ng-change="update()">
+        </dd>
+
     </dl>
 
 </div>

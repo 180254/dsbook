@@ -25,7 +25,9 @@
                 "name": $scope.user.name,
                 "surname": $scope.user.surname,
                 "mobile": $scope.user.mobile,
-                "email": $scope.user.email
+                "email": $scope.user.email,
+                "wantEmail": $scope.user.wantEmail,
+                "wantSms": $scope.user.wantSms
             }).$promise
                 .then((data) => {
                     $scope.user = data;
