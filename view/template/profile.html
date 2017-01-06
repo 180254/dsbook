@@ -1,3 +1,4 @@
+<toaster-container></toaster-container>
 <h2 class="text-center">Edytuj profil</h2>
 
 <hr>
@@ -6,44 +7,47 @@
 
     <br>
 
-    <dl class="dl-horizontal">
-        <dt><label>Nazwa użytkownika</label></dt>
-        <dd>{{user.user}}</dd>
+    <form name="myForm" ng-submit="update()">
 
-        <br>
+        <div class="form-group">
+            <label for="user">Nazwa użytkownika</label>
+            <input type="text" ng-model="user.user" id="user" class="form-control" disabled>
+        </div>
 
-        <dt>Imię</dt>
-        <dd editable-text="user.name" onaftersave="update()">{{user.name || 'Nie ustawiono'}}</dd>
+        <div class="form-group">
+            <label for="name">Imię</label>
+            <input type="text" ng-model="user.name" id="name" class="form-control">
+        </div>
 
-        <br>
+        <div class="form-group">
+            <label for="surname">Nazwisko</label>
+            <input type="text" ng-model="user.surname" id="surname" class="form-control">
+        </div>
 
-        <dt>Nazwisko</dt>
-        <dd editable-text="user.surname" onaftersave="update()">{{user.surname || 'Nie ustawiono'}}</dd>
+        <div class="form-group" ng-class="{ 'has-error': myForm.mobile.$invalid }">
+            <label for="mobile">Numer telefonu</label>
+            <input type="tel" pattern="^\d{9}$" ng-model="user.mobile" id="mobile" name="mobile" class="form-control">
+            <p class="help-block" ng-if="myForm.mobile.$invalid">Niepoprawny format danych</p>
+        </div>
 
-        <br>
+        <div class="form-group" ng-class="{ 'has-error': myForm.email.$invalid }">
+            <label for="email">Adres email</label>
+            <input type="email" ng-model="user.email" id="email" name="email" class="form-control">
+            <p class="help-block" ng-if="myForm.email.$invalid">Niepoprawny format danych</p>
+        </div>
 
-        <dt>Numer telefonu</dt>
-        <dd editable-text="user.mobile" onaftersave="update()">{{user.mobile || 'Nie ustawiono'}}</dd>
+        <div class="form-check">
+            <label for="wantEmail" class="form-check-label">Zgoda na powiadomienia przez e-mail</label>
+            <input id="wantEmail" type="checkbox" class="form-check-input" ng-model="user.wantEmail">
+        </div>
 
-        <br>
+        <div class="form-check">
+            <label for="wantSms" class="form-check-label">Zgoda na powiadomienia przez sms</label>
+            <input id="wantSms" type="checkbox" class="form-check-input" ng-model="user.wantSms">
+        </div>
 
-        <dt>Adres email</dt>
-        <dd editable-text="user.email" onaftersave="update()">{{user.email || 'Nie ustawiono'}}</dd>
-
-        <br>
-
-        <dt>Zgoda na<br/>powiadomienia<br/> przez e-mail</dt>
-        <dd>
-            <input type="checkbox" ng-model="user.wantEmail" ng-change="update()">
-        </dd>
-
-        <br>
-
-        <dt>Zgoda na<br/>powiadomienia<br/>przez sms</dt>
-        <dd>
-            <input type="checkbox" ng-model="user.wantSms" ng-change="update()">
-        </dd>
-
-    </dl>
-
+        <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="submit" ng-submit="update()">
+            Zapisz zmiany
+        </button>
+    </form>
 </div>

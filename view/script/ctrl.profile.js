@@ -8,10 +8,11 @@
     ProfileCtrl.$inject = [
         "$scope",
         '$rootScope',
+        'toaster',
         'UserApi'
     ];
 
-    function ProfileCtrl($scope, $rootScope, UserApi) {
+    function ProfileCtrl($scope, $rootScope, toaster, UserApi) {
         UserApi.main.get({
             user: $rootScope.user.user
         }).$promise
@@ -20,6 +21,7 @@
             });
 
         $scope.update = () => {
+            console.log($scope.user);
             UserApi.main.update({
                 "user": $scope.user.user,
                 "name": $scope.user.name,
@@ -31,6 +33,22 @@
             }).$promise
                 .then((data) => {
                     $scope.user = data;
+                    toaster.pop({
+                        type: "success",
+                        title: "Sukces!",
+                        body: "Dane zostały zaktualizowane.",
+                        showCloseButton: true
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+
+                    toaster.pop({
+                        type: "error",
+                        title: "Porażka!",
+                        body: "Nie udało się zaktualizować danych.",
+                        showCloseButton: true
+                    });
                 });
         }
     }

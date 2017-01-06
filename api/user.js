@@ -89,10 +89,10 @@ exports.postUserUpdateReq = function (req, res, next) {
 
         const mongoUpdate = {};
         reqParam.user && (mongoUpdate.user = reqParam.user);
-        reqParam.name && (mongoUpdate.name = reqParam.name);
-        reqParam.surname && (mongoUpdate.surname = reqParam.surname);
-        reqParam.mobile && (mongoUpdate.mobile = reqParam.mobile);
-        reqParam.email && (mongoUpdate.email = reqParam.email);
+        (mongoUpdate.name = reqParam.name);
+        (mongoUpdate.surname = reqParam.surname);
+        (mongoUpdate.mobile = reqParam.mobile);
+        (mongoUpdate.email = reqParam.email);
         (mongoUpdate.wantEmail = reqParam.wantEmail);
         (mongoUpdate.wantSms = reqParam.wantSms);
 
@@ -118,10 +118,10 @@ exports.postUserUpdateReq = function (req, res, next) {
 
                 if (doc) {
                     reqParam.user && (doc.user = reqParam.user);
-                    reqParam.name && (doc.name = reqParam.name);
-                    reqParam.surname && (doc.surname = reqParam.surname);
-                    reqParam.mobile && (doc.mobile = reqParam.mobile);
-                    reqParam.email && (doc.email = reqParam.email);
+                    (doc.name = reqParam.name);
+                    (doc.surname = reqParam.surname);
+                    (doc.mobile = reqParam.mobile);
+                    (doc.email = reqParam.email);
                     (doc.wantEmail = reqParam.wantEmail);
                     (doc.wantSms = reqParam.wantSms);
                     res.status(200).send(doc);

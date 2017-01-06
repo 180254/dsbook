@@ -8,29 +8,28 @@
 
         <hr>
 
-        <div id="welcome-msg" class="alert alert-dismissable" ng-class="{'alert-success': notInfo.counter  == 0, 'alert-warning': notInfo.counter  != 0}" ng-if="!!notInfo">
+        <div id="welcome-msg" class="alert alert-dismissable" ng-class="{'alert-success': notInfo.counter  == 0, 'alert-danger': notInfo.counter  != 0}" ng-if="!!notInfo">
             <a href="" class="close" data-dismiss="alert" aria-label="close">×</a>
             <p>Witaj {{notInfo.user}}!.</p>
             <p class="text-center" ng-if="notInfo.counter != 0">Masz {{notInfo.counter}} oczekujących powiadomień.</p>
             <p class="text-center" ng-if="notInfo.counter == 0">Nie masz oczekujących powiadomień</p>
         </div>
 
-        <form class="form-sign-in">
+        <form name="formSignIn" class="form-sign-in">
 
-            <p class="input-title">Login</p>
+            <label for="input-login" class="input-title">Login</label>
 
             <input type="text" id="input-login" class="login-box"
-                   placeholder="101-2" required="required" autofocus="autofocus"
-                   ng-model="loginBox">
+                   placeholder="101-2" autofocus="autofocus"
+                   ng-model="loginBox" required>
 
-            <p class="input-title">Hasło</p>
+            <label for="input-password" class="input-title">Hasło</label>
 
             <input type="password" id="input-password" class="login-box"
-                   placeholder="******" required="required"
-                   ng-model="passwordBox">
+                   placeholder="******" ng-model="passwordBox" required>
 
             <button class="btn btn-lg btn-primary" type="submit"
-                    ng-click="obSubmitClick()">
+                    ng-click="obSubmitClick()" ng-disabled="formSignIn.$invalid">
                 Zaloguj
             </button>
 
