@@ -14,6 +14,7 @@
                 "/api/googleService/GetJsonWorkSheet", {}, {
                     get: {
                         method: "GET",
+						isArray: true
                     }
                 }
             )

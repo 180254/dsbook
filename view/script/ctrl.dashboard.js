@@ -14,15 +14,24 @@
 		"EmailApi",
 		"GoogleService"
     ];
+	
+	const SPLIT_INDEX_SURNAME = 2;
+	
+	function concatGoogleUser(res1)
+	{
+       return res1.imię + ' ' + res1.nazwisko + ' ' +  res1.nr
+	}
 
-    function DashboardCtrl($scope, $rootScope, toaster, NotificationApi, SmsApi, EmailApi, GoogleService) {
+    function DashboardCtrl($scope, $rootScope, toaster, NotificationApi, SmsApi, EmailApi, GoogleService) {		
+		 $scope.googleSheetUsers = undefined;
 		
-		var workSheetUsers = GoogleService.GetJsonWorkSheet.get();
-		console.log(workSheetUsers);
-		
-        $scope.predefRecipients = [
-            "101", "201", "301", "302","302","302","302","302","302","302","302","302","302","302"
-        ];
+		 GoogleService.GetJsonWorkSheet.get().$promise
+            .then((res) => {				
+                $scope.predefRecipients = res.map(concatGoogleUser);				
+            })
+            .catch((err) => {
+                console.log(err);                
+            });      
 
         $scope.predefButtons = {
             pizza: {
@@ -58,9 +67,8 @@
                 return;
             }
 
-
             NotificationApi.main.post({
-                recipient: $scope.recipient,
+                recipient: $scope.recipient.split(' ')[SPLIT_INDEX_SURNAME],
                 content: sContent
             }).$promise
                 .then((notification) => {

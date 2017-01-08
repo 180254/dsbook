@@ -19,13 +19,11 @@
             <h3 for="selectedRecipient">Numer pokoju</h3>
             <input class="form-control input-lg"
                    id="selectedRecipient"
-                   type="text" placeholder="Wprowadź numer pokoju"
+                   type="text" placeholder="Wprowadź numer pokoju lub nazwisko mieszkańca"
                    uib-typeahead="item for item in predefRecipients | filter:$viewValue | limitTo:8"
                    ng-model="recipient"
                    required="required"
-                   autocomplete="off"
-                   ng-maxlength="3"
-                   ng-minlength="3">
+                   autocomplete="off">
         </div>
 
         <h3 for="selectedRecipient">Rodzaj zgłoszenia</h3>
